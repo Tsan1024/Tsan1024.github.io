@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>robots on Tsan Blog</title>
+    <link>Tsan1024.github.io/tags/robots/</link>
+    <description>Recent content in robots on Tsan Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Nov 2023 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="Tsan1024.github.io/tags/robots/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>robots introduce</title>
+      <link>Tsan1024.github.io/post/robots/introduce/</link>
+      <pubDate>Wed, 22 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>Tsan1024.github.io/post/robots/introduce/</guid>
+      <description>robots </description>
+    </item>
+    
+  </channel>
+</rss>
