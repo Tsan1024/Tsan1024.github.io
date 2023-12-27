@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>c&#43;&#43; on Tsan Blog</title>
+    <link>https://tsan1024.github.io/tags/c&#43;&#43;/</link>
+    <description>Recent content in c&#43;&#43; on Tsan Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 08 Dec 2023 23:01:12 +0800</lastBuildDate>
+    <atom:link href="https://tsan1024.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>编程规范</title>
+      <link>https://tsan1024.github.io/post/tech/%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/</link>
+      <pubDate>Fri, 08 Dec 2023 23:01:12 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/</guid>
+      <description>c++编程规范： https://zh-google-styleguide.readthedocs.io/en/latest/contents/</description>
+    </item>
+  </channel>
+</rss>

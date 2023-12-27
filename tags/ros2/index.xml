@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ros2 on Tsan Blog</title>
+    <link>https://tsan1024.github.io/tags/ros2/</link>
+    <description>Recent content in ros2 on Tsan Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 03 Dec 2023 21:02:15 +0800</lastBuildDate>
+    <atom:link href="https://tsan1024.github.io/tags/ros2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ROS架构与通信</title>
+      <link>https://tsan1024.github.io/post/robots/ros%E9%80%9A%E4%BF%A1/</link>
+      <pubDate>Sun, 03 Dec 2023 21:02:15 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/robots/ros%E9%80%9A%E4%BF%A1/</guid>
+      <description>ROS2通信模型 话题 服务 参数 动作 参考链接 入门教程：https://book.guyuehome.com/ ROS 和 ROS2 架构和通信 https://codeantenna.com/a/909CWGyaSo#5_ROS_2__131</description>
+    </item>
+  </channel>
+</rss>
