@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>socket on Tsan Blog</title>
+    <link>https://tsan1024.github.io/tags/socket/</link>
+    <description>Recent content in socket on Tsan Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 09 May 2024 14:53:59 +0800</lastBuildDate>
+    <atom:link href="https://tsan1024.github.io/tags/socket/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>文件描述符</title>
+      <link>https://tsan1024.github.io/post/tech/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/</link>
+      <pubDate>Thu, 09 May 2024 14:53:59 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/</guid>
+      <description>https://blog.csdn.net/cywosp/article/details/38965239 https://www.cnblogs.com/cscshi/p/15705033.html https://linuxmeerkat.wordpress.com/2011/12/02/file-descriptors-explained/ https://zhuanlan.zhihu.com/p/143430585 https://xiehongfeng100.github.io/2018/09/08/net-read-and-write/</description>
+    </item>
+  </channel>
+</rss>

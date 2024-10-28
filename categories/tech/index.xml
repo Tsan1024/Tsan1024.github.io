@@ -6,8 +6,64 @@
     <description>Recent content in Tech on Tsan Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 26 Dec 2023 23:17:45 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 28 Oct 2024 23:22:27 +0800</lastBuildDate>
     <atom:link href="https://tsan1024.github.io/categories/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>An Example Post</title>
+      <link>https://tsan1024.github.io/post/ai/test/</link>
+      <pubDate>Mon, 28 Oct 2024 23:22:27 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/ai/test/</guid>
+      <description>testing</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;进程间通信</title>
+      <link>https://tsan1024.github.io/post/tech/c&#43;&#43;%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</link>
+      <pubDate>Thu, 30 May 2024 16:38:45 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/c&#43;&#43;%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</guid>
+      <description>分类 管道（Pipes） 命名管道（Named Pipes）：适用于无关进程之间的通信。命名管道有一个名称，可以在文件系统中进行标识。 无名管道（U</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;强制类型转换</title>
+      <link>https://tsan1024.github.io/post/tech/c&#43;&#43;%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</link>
+      <pubDate>Thu, 23 May 2024 09:38:45 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/c&#43;&#43;%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</guid>
+      <description>c/c++类型转换种分为两种：隐式类型转换（编译器）、显示类型转换（强制类型转换） c 类型转换 c语言的类型转换主要有两种： (new-type) expression new-type (expression) 局限性 转换随</description>
+    </item>
+    <item>
+      <title>分布式</title>
+      <link>https://tsan1024.github.io/post/tech/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/</link>
+      <pubDate>Fri, 10 May 2024 16:38:45 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/</guid>
+      <description>分布式系统设计与开发、负载均衡技术，系统容灾设计，高可用系统等知识 https://cloud.tencent.com/developer/article/1419513</description>
+    </item>
+    <item>
+      <title>文件描述符</title>
+      <link>https://tsan1024.github.io/post/tech/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/</link>
+      <pubDate>Thu, 09 May 2024 14:53:59 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/</guid>
+      <description>https://blog.csdn.net/cywosp/article/details/38965239 https://www.cnblogs.com/cscshi/p/15705033.html https://linuxmeerkat.wordpress.com/2011/12/02/file-descriptors-explained/ https://zhuanlan.zhihu.com/p/143430585 https://xiehongfeng100.github.io/2018/09/08/net-read-and-write/</description>
+    </item>
+    <item>
+      <title>常见的c&#43;&#43;性能调优工具</title>
+      <link>https://tsan1024.github.io/post/tech/c&#43;&#43;-tools/</link>
+      <pubDate>Wed, 08 May 2024 14:53:59 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/c&#43;&#43;-tools/</guid>
+      <description>valgrind perf gporf 1 perf Perf是内置于Linux内核源码树中的性能剖析工具。以性能事件为基础，常用于性能瓶颈的查找与热点代码的定位。 1.1 使用 常见有两种使用</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;并发编程总结</title>
+      <link>https://tsan1024.github.io/post/tech/c&#43;&#43;/</link>
+      <pubDate>Tue, 07 May 2024 16:38:45 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/c&#43;&#43;/</guid>
+      <description>多线程操作,</description>
+    </item>
+    <item>
+      <title>设计模式</title>
+      <link>https://tsan1024.github.io/post/tech/design-pattern/</link>
+      <pubDate>Wed, 27 Dec 2023 23:40:25 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/design-pattern/</guid>
+      <description>引言 创见型模式 工厂方法模式 抽象工厂模式 生成器模式 原型模式 单例模式 结构型模式 适配器模式 桥接模式 组合模式 装饰模式 外观模式 享元模式 代理模式 行为模式</description>
+    </item>
     <item>
       <title>golang 单元测试</title>
       <link>https://tsan1024.github.io/post/tech/go%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/</link>

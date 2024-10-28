@@ -6,8 +6,36 @@
     <description>Recent content in c&#43;&#43; on Tsan Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 Dec 2023 23:01:12 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 30 May 2024 16:38:45 +0800</lastBuildDate>
     <atom:link href="https://tsan1024.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;进程间通信</title>
+      <link>https://tsan1024.github.io/post/tech/c&#43;&#43;%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</link>
+      <pubDate>Thu, 30 May 2024 16:38:45 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/c&#43;&#43;%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</guid>
+      <description>分类 管道（Pipes） 命名管道（Named Pipes）：适用于无关进程之间的通信。命名管道有一个名称，可以在文件系统中进行标识。 无名管道（U</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;强制类型转换</title>
+      <link>https://tsan1024.github.io/post/tech/c&#43;&#43;%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</link>
+      <pubDate>Thu, 23 May 2024 09:38:45 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/c&#43;&#43;%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</guid>
+      <description>c/c++类型转换种分为两种：隐式类型转换（编译器）、显示类型转换（强制类型转换） c 类型转换 c语言的类型转换主要有两种： (new-type) expression new-type (expression) 局限性 转换随</description>
+    </item>
+    <item>
+      <title>常见的c&#43;&#43;性能调优工具</title>
+      <link>https://tsan1024.github.io/post/tech/c&#43;&#43;-tools/</link>
+      <pubDate>Wed, 08 May 2024 14:53:59 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/c&#43;&#43;-tools/</guid>
+      <description>valgrind perf gporf 1 perf Perf是内置于Linux内核源码树中的性能剖析工具。以性能事件为基础，常用于性能瓶颈的查找与热点代码的定位。 1.1 使用 常见有两种使用</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;并发编程总结</title>
+      <link>https://tsan1024.github.io/post/tech/c&#43;&#43;/</link>
+      <pubDate>Tue, 07 May 2024 16:38:45 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/c&#43;&#43;/</guid>
+      <description>多线程操作,</description>
+    </item>
     <item>
       <title>编程规范</title>
       <link>https://tsan1024.github.io/post/tech/%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/</link>

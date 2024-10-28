@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Tsan Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://tsan1024.github.io//img/home-bg-jeep.jpg">
+    <meta property="twitter:image" content="https://tsan1024.github.io//img/home-bg-jeep.jpg" />
+    
+
+    
+    <meta name="title" content="C&#43;&#43;强制类型转换" />
+    <meta property="og:title" content="C&#43;&#43;强制类型转换" />
+    <meta property="twitter:title" content="C&#43;&#43;强制类型转换" />
+    
+
+    
+    <meta name="description" content="Tsan">
+    <meta property="og:description" content="Tsan" />
+    <meta property="twitter:description" content="Tsan" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="robots, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>C&#43;&#43;强制类型转换 | 唐山的博客 | Tsan Blog</title>
+
+    <link rel="canonical" href="/post/tech/c&#43;&#43;%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Tsan Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/robots/">robots</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/archive//">ARCHIVE</a></li>
+                    
+                        <li><a href="/notes//">NOTES</a></li>
+                    
+                        <li><a href="/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-bg-jeep.jpg')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/c&#43;&#43;" title="c&#43;&#43;">
+                            c&#43;&#43;
+                        </a>
+                        
+                    </div>
+                    <h1>C&#43;&#43;强制类型转换</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                     &#34;tsand&#34;
+                             
+                            on 
+                            Thursday, May 23, 2024
+                            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                            
+                                <span id="/post/tech/c&#43;&#43;%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                                <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                                    <span id="/post/tech/c&#43;&#43;%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                                    阅读 </span></span>|<span class="post-date">共1546字</span>，阅读约<span class="more-meta"> 4 分钟</span>
+                            
+
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <p>c/c++类型转换种分为两种：隐式类型转换（编译器）、显示类型转换（强制类型转换）</p>
+<h2 id="c-类型转换">c 类型转换</h2>
+<p>c语言的类型转换主要有两种：</p>
+<ul>
+<li>(new-type) expression</li>
+<li>new-type (expression)</li>
+</ul>
+<h3 id="局限性">局限性</h3>
+<ul>
+<li>转换随意，eg: 指向const对象的指针可随意换成指向非const对象的指针，指向基类对象的指针转换成指向派生类对象的指针。</li>
+<li>缺乏关键字与标识符，不易代码排查</li>
+</ul>
+<h2 id="c-强制类型转换">c++ 强制类型转换</h2>
+<ul>
+<li>static_cast:</li>
+<li>dynamic_cast</li>
+<li>const_cast</li>
+<li>reinterpret_cast</li>
+</ul>
+<h3 id="用法">用法</h3>
+<p>强制类型转换运算符&lt;目标类型&gt;（待转换表达式）</p>
+<h3 id="static_cast">static_cast</h3>
+<ul>
+<li>基本类型转换，例如 int 转换为 float。（向上转换）</li>
+<li>类层次结构中上行转换（从派生类到基类，安全）。</li>
+<li>类层次结构中下行转换（从基类到派生类，但不检查安全性，不安全不建议使用）。</li>
+</ul>
+<pre tabindex="0"><code>// 上行转换，派生类→基类
+Derive* d = new Derive();
+Base* b = static_cast&lt;Base*&gt;(d);
+
+// 下行转换，基类→派生类
+Base* b = new Base();
+Derive* d = static_cast&lt;Derive*&gt;(b);
+</code></pre><ul>
+<li>移除指针的 const/volatile 修饰符（但不添加）。</li>
+<li>把空指针转换成目标类型的空指针。</li>
+<li>把任何类型的表达式转换成void类型。</li>
+</ul>
+<p>示例：</p>
+<pre tabindex="0"><code>int a = 10;
+double b = static_cast&lt;double&gt;(n);
+int* d = &amp;a;
+void* c = static_cast&lt;void*&gt;(d); //任意类型转换成void类型
+
+Base* basePtr = new Derived();
+Derived* derivedPtr = static_cast&lt;Derived*&gt;(basePtr);
+</code></pre><p>不可使用</p>
+<ul>
+<li>不同类型的指针之间互相转换</li>
+<li>不同类型的引用之间的转换</li>
+<li>整型和指针之间转换</li>
+</ul>
+<p>优点</p>
+<p>编译时转换，性能高。
+可读性强，语法清晰。</p>
+<p>缺点</p>
+<p>无法进行运行时类型检查，可能导致不安全的类型转换</p>
+<h2 id="dynastic_cast">dynastic_cast</h2>
+<p>只有在派生类之间转换时才使用dynamic_cast，type必须是类指针，类引用或者void*。</p>
+<ul>
+<li>
+<p>基类必须要有虚函数，因为dynamic_cast是运行时类型检查，需要运行时类型信息，而这个信息是存储在类的虚函数表中，只有一个类定义了虚函数，才会有虚函数表（如果一个类没有虚函数，那么一般意义上，这个类的设计者也不想它成为一个基类）。</p>
+</li>
+<li>
+<p>对于下行转换，dynamic_cast是安全的（当类型不一致时，转换过来的是空指针），而static_cast是不安全的（当类型不一致时，转换过来的是错误意义的指针，可能造成踩内存，非法访问等各种问题）</p>
+</li>
+</ul>
+<pre tabindex="0"><code>Base* basePtr = new Derived();
+Derived* derivedPtr = dynamic_cast&lt;Derived*&gt;(basePtr);
+if (derivedPtr) {
+    // 转换成功，可以安全使用 derivedPtr
+} else {
+    // 转换失败，处理错误情况
+}
+</code></pre><pre tabindex="0"><code>class BaseClass 
+{
+public:
+　　int m_iNum;
+　　virtual void foo(){};//基类必须有虚函数。保持多台特性才能使用dynamic_cast
+};
+
+class DerivedClass: public BaseClass 
+{
+public:
+　　char *m_szName[100];
+　　void bar(){};
+};
+　　
+BaseClass* pb = new DerivedClass();
+DerivedClass *pd1 = static_cast&lt;DerivedClass *&gt;(pb);//子类-&gt;父类，静态类型转换，正确但不推荐
+
+DerivedClass *pd2 = dynamic_cast&lt;DerivedClass *&gt;(pb);//子类-&gt;父类，动态类型转换，正确
+
+BaseClass* pb2 = new BaseClass();
+//父类-&gt;子类，静态类型转换，危险！访问子类m_szName成员越界
+DerivedClass *pd21 = static_cast&lt;DerivedClass *&gt;(pb2);
+
+//父类-&gt;子类，动态类型转换，安全的。结果是NULL
+DerivedClass *pd22 = dynamic_cast&lt;DerivedClass *&gt;(pb2);
+</code></pre><p>优点</p>
+<p>运行时类型检查，保证转换的安全性。
+尤其适用于多态环境。</p>
+<p>缺点</p>
+<p>运行时开销较高。
+需要启用 RTTI（运行时类型信息），增加了程序的复杂性。</p>
+<h2 id="const_cast">const_cast</h2>
+<p>用途(去除常量行为较危险)</p>
+<ul>
+<li>添加或移除 const/volatile 修饰符。</li>
+<li>常用于需要修改本应不可变的数据时，例如第三方库的 API 不接受 const 数据。</li>
+<li>常量指针转换为非常量指针，并且仍然指向原来的对象</li>
+<li>常量引用被转换为非常量引用，并且仍然指向原来的对象</li>
+</ul>
+<pre tabindex="0"><code>struct SA 
+{
+　　int i;
+};
+
+const SA ra;
+//ra.i = 10; //直接修改const类型，编译错误
+SA &amp;rb = const_cast&lt;SA&amp;&gt;(ra);
+rb.i = 10;
+
+const int* constPtr = &amp;i;
+int* modifiablePtr = const_cast&lt;int*&gt;(constPtr);
+</code></pre><p>优点</p>
+<p>允许在非常特殊的场景下修改常量数据。</p>
+<p>缺点</p>
+<ul>
+<li>可能导致未定义行为，如果用于去除真正的常量属性。</li>
+<li>易引入错误，应谨慎使用。</li>
+</ul>
+<h2 id="reinterpret_cast尽量不使用">reinterpret_cast（尽量不使用）</h2>
+<p>用途</p>
+<ul>
+<li>强制转换指针类型，几乎可以在任何指针类型之间转换。</li>
+<li>用于实现底层操作，例如位操作、系统调用、硬件编程等。</li>
+</ul>
+<pre tabindex="0"><code>int* intPtr = new int(10);
+char* charPtr = reinterpret_cast&lt;char*&gt;(intPtr);
+</code></pre><p>优点</p>
+<p>提供极大的灵活性，可以进行几乎任意的类型转换。
+缺点</p>
+<ul>
+<li>极易引入不安全的代码，可能导致未定义行为。</li>
+<li>可读性差，难以维护和调试。</li>
+</ul>
+<p>总结</p>
+<ol>
+<li>static_cast 适用于大多数类型安全的显式转换，效率高。</li>
+<li>dynamic_cast 适用于需要运行时类型检查的多态环境，确保类型安全。</li>
+<li>const_cast 用于移除或添加常量属性，适用于特定场景。</li>
+<li>reinterpret_cast 适用于底层操作，但容易引发错误，应谨慎使用。</li>
+</ol>
+<h2 id="引用">引用</h2>
+<ol>
+<li><a href="https://blog.csdn.net/chen134225/article/details/81305049">https://blog.csdn.net/chen134225/article/details/81305049</a></li>
+</ol>
+
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/tech/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/" data-toggle="tooltip" data-placement="top" title="分布式">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/tech/c&#43;&#43;%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" data-toggle="tooltip" data-placement="top" title="C&#43;&#43;进程间通信">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/c&#43;&#43;" title="c&#43;&#43;">
+                            c&#43;&#43;
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/golang" title="golang">
+                            golang
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/robots" title="robots">
+                            robots
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href="http://baidu.com">Yzf的博客</a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:tsandxxx@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/your%20wechat%20qr%20code%20image">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yourgithub">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/yourlinkedinid">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://stackoverflow.com/users/yourstackoverflowid">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Tsan Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Tsan Blog 2024
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>工具 on Tsan Blog</title>
+    <link>https://tsan1024.github.io/tags/%E5%B7%A5%E5%85%B7/</link>
+    <description>Recent content in 工具 on Tsan Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 08 May 2024 14:53:59 +0800</lastBuildDate>
+    <atom:link href="https://tsan1024.github.io/tags/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>常见的c&#43;&#43;性能调优工具</title>
+      <link>https://tsan1024.github.io/post/tech/c&#43;&#43;-tools/</link>
+      <pubDate>Wed, 08 May 2024 14:53:59 +0800</pubDate>
+      <guid>https://tsan1024.github.io/post/tech/c&#43;&#43;-tools/</guid>
+      <description>valgrind perf gporf 1 perf Perf是内置于Linux内核源码树中的性能剖析工具。以性能事件为基础，常用于性能瓶颈的查找与热点代码的定位。 1.1 使用 常见有两种使用</description>
+    </item>
+  </channel>
+</rss>

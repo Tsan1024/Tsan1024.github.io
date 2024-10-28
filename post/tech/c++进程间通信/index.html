@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Tsan Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://tsan1024.github.io//img/home-bg-jeep.jpg">
+    <meta property="twitter:image" content="https://tsan1024.github.io//img/home-bg-jeep.jpg" />
+    
+
+    
+    <meta name="title" content="C&#43;&#43;进程间通信" />
+    <meta property="og:title" content="C&#43;&#43;进程间通信" />
+    <meta property="twitter:title" content="C&#43;&#43;进程间通信" />
+    
+
+    
+    <meta name="description" content="Tsan">
+    <meta property="og:description" content="Tsan" />
+    <meta property="twitter:description" content="Tsan" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="robots, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>C&#43;&#43;进程间通信 | 唐山的博客 | Tsan Blog</title>
+
+    <link rel="canonical" href="/post/tech/c&#43;&#43;%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Tsan Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/robots/">robots</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/archive//">ARCHIVE</a></li>
+                    
+                        <li><a href="/notes//">NOTES</a></li>
+                    
+                        <li><a href="/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-bg-jeep.jpg')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/c&#43;&#43;" title="c&#43;&#43;">
+                            c&#43;&#43;
+                        </a>
+                        
+                    </div>
+                    <h1>C&#43;&#43;进程间通信</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                     &#34;tsand&#34;
+                             
+                            on 
+                            Thursday, May 30, 2024
+                            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                            
+                                <span id="/post/tech/c&#43;&#43;%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                                <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                                    <span id="/post/tech/c&#43;&#43;%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                                    阅读 </span></span>|<span class="post-date">共1624字</span>，阅读约<span class="more-meta"> 4 分钟</span>
+                            
+
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="分类">分类</h2>
+<ul>
+<li>
+<p>管道（Pipes）</p>
+<ul>
+<li>命名管道（Named Pipes）：适用于无关进程之间的通信。命名管道有一个名称，可以在文件系统中进行标识。</li>
+<li>无名管道（Unnamed Pipes）：通常用于父子进程之间的通信，因为它们在创建时不具备名称。</li>
+</ul>
+</li>
+<li>
+<p>消息队列（Message Queues）
+提供了一种通过消息发送和接收来进行进程间通信的方法。消息队列允许进程以一种异步方式传递数据。</p>
+</li>
+<li>
+<p>共享内存（Shared Memory）
+允许多个进程共享一个内存段，从而实现最快速的进程通信。需要同步机制（如信号量）来避免数据竞争。</p>
+</li>
+<li>
+<p>信号（Signals）
+主要用于通知进程某个事件的发生，可以用来处理简单的通知和中断。</p>
+</li>
+<li>
+<p>信号量（Semaphores）
+通常用于控制对共享资源的访问。信号量可以是计数信号量，也可以是二元信号量（即互斥锁）。</p>
+</li>
+<li>
+<p>套接字（Sockets）
+虽然通常用于网络通信，但也可以用于同一主机上不同进程之间的通信。套接字支持多种通信协议（如TCP和UDP）。</p>
+</li>
+<li>
+<p>内存映射文件（Memory-Mapped Files）</p>
+<p>通过将文件映射到内存地址空间，实现文件内容的共享，进而实现进程间通信。</p>
+</li>
+</ul>
+<h2 id="示例">示例</h2>
+<h3 id="管道">管道</h3>
+<p>无名管道</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    int pipefd[2];
+    pid_t pid;
+    char buffer[20];
+
+    if (pipe(pipefd) == -1) {
+        perror(&#34;pipe&#34;);
+        exit(EXIT_FAILURE);
+    }
+
+    pid = fork();
+    if (pid == -1) {
+        perror(&#34;fork&#34;);
+        exit(EXIT_FAILURE);
+    }
+
+    if (pid == 0) { // 子进程
+        std::cout &lt;&lt; &#34;child: &#34; &lt;&lt; pid &lt;&lt; std::endl;
+        close(pipefd[1]); // 关闭写端
+        read(pipefd[0], buffer, sizeof(buffer));
+        std::cout &lt;&lt; &#34;Child received: &#34; &lt;&lt; buffer &lt;&lt; std::endl;
+        close(pipefd[0]);
+    } else { // 父进程
+        std::cout &lt;&lt; &#34;father: &#34; &lt;&lt; pid &lt;&lt; std::endl;
+        close(pipefd[0]); // 关闭读端
+        write(pipefd[1], &#34;Hello, world!&#34;, 14);
+        close(pipefd[1]);
+        wait(NULL); // 等待子进程结束
+    }
+
+    return 0;
+}
+</code></pre><p>有名管道</p>
+<pre tabindex="0"><code>write.cpp
+// writer.cpp
+#include &lt;iostream&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;cstring&gt;
+
+int main() {
+    const char *fifo_path = &#34;/tmp/my_fifo&#34;;
+    
+    // 创建命名管道（如果已经存在则不会重新创建）mkfifo create fifo
+    // if (mkfifo(fifo_path, 0666) == -1) {
+    //     perror(&#34;mkfifo&#34;);
+    //     return 1;
+    // }
+
+    // 打开命名管道
+    int fd = open(fifo_path, O_WRONLY);
+    if (fd == -1) {
+        perror(&#34;open&#34;);
+        return 1;
+    }
+
+    // 写入消息到管道
+    const char *message = &#34;Hello from writer!&#34;;
+    if (write(fd, message, strlen(message) + 1) == -1) {
+        perror(&#34;write&#34;);
+        close(fd);
+        return 1;
+    }
+
+    // 关闭管道
+    close(fd);
+
+    return 0;
+}
+</code></pre><pre tabindex="0"><code>read.cpp
+// reader.cpp
+#include &lt;iostream&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    const char *fifo_path = &#34;/tmp/my_fifo&#34;;
+    
+    // 创建命名管道（如果已经存在则不会重新创建）
+    if (mkfifo(fifo_path, 0666) == -1) {
+        perror(&#34;mkfifo&#34;);
+        return 1;
+    }
+
+    // 打开命名管道
+    int fd = open(fifo_path, O_RDONLY);
+    if (fd == -1) {
+        perror(&#34;open&#34;);
+        return 1;
+    }
+
+    // 从管道读取消息
+    char buffer[128];
+    if (read(fd, buffer, sizeof(buffer)) == -1) {
+        perror(&#34;read&#34;);
+        close(fd);
+        return 1;
+    }
+
+    // 输出读取的消息
+    std::cout &lt;&lt; &#34;Reader received: &#34; &lt;&lt; buffer &lt;&lt; std::endl;
+
+    // 关闭管道
+    close(fd);
+
+    return 0;
+}
+</code></pre><h3 id="消息队列">消息队列</h3>
+<pre tabindex="0"><code>#include&lt;stdio.h&gt;
+#include&lt;unistd.h&gt;
+#include&lt;sys/ipc.h&gt;
+#include&lt;sys/msg.h&gt;
+
+#define KEY 0x9999
+
+typedef struct{
+    long msgType;
+    char data[80];
+}Msg;
+
+// Msg可以随意定义但需要含有一个消息类型type，而且还必须是结构体的第一个成员。而结构体中的其他成员都被认为是要发送的消息体数据。
+
+int main(void){
+    pid_t pid;
+    int msgid;
+    int i = 0;
+    int ret;
+    Msg msg;
+
+    pid = fork();
+    if(pid == 0){ 
+        msgid = msgget(KEY, IPC_CREAT | 0666);
+        if(msgid == -1){
+            perror(&#34;&#34;);
+            return -1; 
+        }   
+        while(1){
+            msg.msgType = 1;
+            sprintf(msg.data, &#34;Hello I am sender %d&#34;, i);
+            msgsnd(msgid, &amp;msg, sizeof(Msg) - sizeof(long), 0);
+            i++;
+            sleep(1);
+        }
+    }else if(pid &gt; 0){
+        msgid = msgget(KEY, IPC_CREAT | 0666);
+        if(msgid == -1){
+            perror(&#34;&#34;);
+            return -1;
+        }
+        while(1){
+            ret = msgrcv(msgid, &amp;msg, sizeof(Msg) - sizeof(long), 1, 0);
+            if(ret &lt; 0){
+                perror(&#34;&#34;);
+                return -1;
+            }
+            printf(&#34;Father RCV :%s\n&#34;, msg.data);
+        }
+
+
+    }else{
+        perror(&#34;&#34;);
+        return -1;
+    }   
+
+    return 0;
+}
+</code></pre><h2 id="共享进程">共享进程</h2>
+<p>进程a</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/shm.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;cstring&gt;
+
+#define SHM_SIZE 1024
+
+int main() {
+    int shmid;
+    char *shmaddr;
+
+    // 创建共享内存段
+    shmid = shmget(IPC_PRIVATE, SHM_SIZE, IPC_CREAT | 0666);
+    if (shmid == -1) {
+        perror(&#34;shmget&#34;);
+        return 1;
+    }
+
+    // 将共享内存段连接到当前进程的地址空间
+    shmaddr = static_cast&lt;char*&gt;(shmat(shmid, nullptr, 0));
+    if (shmaddr == (char*)-1) {
+        perror(&#34;shmat&#34;);
+        return 1;
+    }
+
+    // 写入数据到共享内存
+    strncpy(shmaddr, &#34;Hello from parent process&#34;, SHM_SIZE);
+
+    // 分离共享内存，分离后当前进程则无法再修改该共享内存段
+    shmdt(shmaddr);
+    // strncpy(shmaddr, &#34;Updated message&#34;, strlen(&#34;Updated message&#34;) + 1); 
+    // 打印共享内存ID以便子进程使用
+    std::cout &lt;&lt; &#34;Shared memory ID: &#34; &lt;&lt; shmid &lt;&lt; std::endl;
+
+    return 0;
+}
+</code></pre><p>进程b</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/shm.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;cstring&gt;
+
+#define SHM_SIZE 1024
+
+int main(int argc, char* argv[]) {
+    int shmid;
+    char *shmaddr;
+
+    if (argc != 2) {
+        std::cerr &lt;&lt; &#34;Usage: &#34; &lt;&lt; argv[0] &lt;&lt; &#34; &lt;shared_memory_id&gt;&#34; &lt;&lt; std::endl;
+        return 1;
+    }
+
+    // 获取共享内存ID
+    shmid = std::stoi(argv[1]);
+
+    // 连接到共享内存
+    shmaddr = static_cast&lt;char*&gt;(shmat(shmid, nullptr, 0));
+    if (shmaddr == (char*)-1) {
+        perror(&#34;shmat&#34;);
+        return 1;
+    }
+
+    // 从共享内存中读取数据并打印
+    std::cout &lt;&lt; &#34;Message from parent process: &#34; &lt;&lt; shmaddr &lt;&lt; std::endl;
+
+    // 更新共享内存
+    strncpy(shmaddr, &#34;Updated message&#34;, strlen(&#34;Updated message&#34;) + 1); 
+    
+    // 分离共享内存
+    shmdt(shmaddr);
+
+    return 0;
+}
+</code></pre><h2 id="信号">信号</h2>
+<p>进程间通过信号通信</p>
+<pre tabindex="0"><code>// receiver.cpp
+
+#include &lt;iostream&gt;
+#include &lt;csignal&gt;
+#include &lt;unistd.h&gt;
+
+// 信号处理程序
+void handle_sigusr1(int sig) {
+    std::cout &lt;&lt; &#34;Received SIGUSR1 signal. &#34; &lt;&lt; sig &lt;&lt; std::endl;
+}
+
+int main() {
+    // 设置信号处理程序
+    if (signal(SIGUSR1, handle_sigusr1) == SIG_ERR) {
+        perror(&#34;Error setting signal handler&#34;);
+        return 1;
+    }
+
+    // 使进程保持运行，以等待信号
+    while (true) {
+        std::cout &lt;&lt; &#34;Waiting for signal...&#34; &lt;&lt; std::endl;
+        sleep(5);
+    }
+
+    return 0;
+}
+</code></pre><pre tabindex="0"><code>// sender.cpp
+#include &lt;iostream&gt;
+#include &lt;csignal&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    pid_t pid;
+    std::cout &lt;&lt; &#34;Enter PID of the process to send SIGUSR1: &#34;;
+    std::cin &gt;&gt; pid;
+
+    // 发送 SIGUSR1 信号
+    if (kill(pid, SIGUSR1) == 0) {
+        std::cout &lt;&lt; &#34;Signal sent successfully.&#34; &lt;&lt; std::endl;
+    } else {
+        perror(&#34;Error sending signal&#34;);
+    }
+
+    return 0;
+}
+</code></pre><h2 id="信号量">信号量</h2>
+<pre tabindex="0"><code>// writer.cpp
+#include &lt;iostream&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/mman.h&gt;
+#include &lt;semaphore.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;cstring&gt;
+
+const char* SHM_NAME = &#34;/shared_memory&#34;;
+const char* SEM_NAME = &#34;/semaphore&#34;;
+
+struct SharedData {
+    char message[256];
+};
+
+int main() {
+    int shm_fd = shm_open(SHM_NAME, O_CREAT | O_RDWR, 0666);
+    ftruncate(shm_fd, sizeof(SharedData));
+    SharedData* shared_data = (SharedData*)mmap(0, sizeof(SharedData), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
+    sem_t* sem = sem_open(SEM_NAME, O_CREAT, 0666, 1);
+
+    sem_wait(sem);  // Wait for semaphore
+    std::strcpy(shared_data-&gt;message, &#34;Hello from writer!&#34;);
+    sem_post(sem);  // Signal semaphore
+
+    munmap(shared_data, sizeof(SharedData));
+    close(shm_fd);
+    sem_close(sem);
+
+    return 0;
+}
+</code></pre><pre tabindex="0"><code>// reader.cpp
+#include &lt;iostream&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/mman.h&gt;
+#include &lt;semaphore.h&gt;
+#include &lt;unistd.h&gt;
+
+const char* SHM_NAME = &#34;/shared_memory&#34;;
+const char* SEM_NAME = &#34;/semaphore&#34;;
+
+struct SharedData {
+    char message[256];
+};
+
+int main() {
+    int shm_fd = shm_open(SHM_NAME, O_RDWR, 0666);
+    SharedData* shared_data = (SharedData*)mmap(0, sizeof(SharedData), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
+    sem_t* sem = sem_open(SEM_NAME, 0);
+
+    sem_wait(sem);  // Wait for semaphore
+    std::cout &lt;&lt; &#34;Message from writer: &#34; &lt;&lt; shared_data-&gt;message &lt;&lt; std::endl;
+    sem_post(sem);  // Signal semaphore
+
+    munmap(shared_data, sizeof(SharedData));
+    close(shm_fd);
+    sem_close(sem);
+
+    return 0;
+}
+</code></pre>
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/tech/c&#43;&#43;%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" data-toggle="tooltip" data-placement="top" title="C&#43;&#43;强制类型转换">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/ai/test/" data-toggle="tooltip" data-placement="top" title="An Example Post">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/c&#43;&#43;" title="c&#43;&#43;">
+                            c&#43;&#43;
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/golang" title="golang">
+                            golang
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/robots" title="robots">
+                            robots
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href="http://baidu.com">Yzf的博客</a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:tsandxxx@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/your%20wechat%20qr%20code%20image">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yourgithub">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/yourlinkedinid">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://stackoverflow.com/users/yourstackoverflowid">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Tsan Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Tsan Blog 2024
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>
