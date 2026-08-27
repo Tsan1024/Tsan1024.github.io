@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 930" role="img" aria-labelledby="title desc">
+  <title id="title">Layout 数据闭环</title>
+  <desc id="desc">原始文档经过多模态大模型预标注、规则和人工质检后，用于训练 Layout 检测模型。检测模型在批量推理中发现困难样本，再回流到标注阶段。</desc>
+  <style>
+    :root {
+      --background: #f8f8f6;
+      --surface: #ffffff;
+      --text: #20201e;
+      --muted: #6f6e68;
+      --border: #d9d7d1;
+      --accent: #2457a6;
+      --accent-soft: #eaf0fa;
+    }
+    .background { fill: var(--background); }
+    .node { fill: var(--surface); stroke: var(--border); stroke-width: 2; }
+    .node-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2; }
+    .title { fill: var(--text); font: 700 30px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", sans-serif; }
+    .subtitle { fill: var(--muted); font: 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", sans-serif; }
+    .step { fill: var(--accent); font: 700 14px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", sans-serif; letter-spacing: 0.08em; }
+    .label { fill: var(--text); font: 600 22px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", sans-serif; }
+    .detail { fill: var(--muted); font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", sans-serif; }
+    .arrow { fill: none; stroke: var(--muted); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrowhead); }
+    .loop { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrowhead-accent); }
+    .loop-label { fill: var(--accent); font: 600 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #1d1d1b;
+        --surface: #252523;
+        --text: #ecebe7;
+        --muted: #aaa8a0;
+        --border: #41413d;
+        --accent: #8ab4f8;
+        --accent-soft: #202d42;
+      }
+    }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--muted)" />
+    </marker>
+    <marker id="arrowhead-accent" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" />
+    </marker>
+  </defs>
+
+  <rect class="background" width="720" height="930" rx="18" />
+  <text class="title" x="360" y="55" text-anchor="middle">Layout 数据闭环</text>
+  <text class="subtitle" x="360" y="86" text-anchor="middle">大模型生产候选标签，检测模型稳定执行</text>
+
+  <rect class="node" x="90" y="125" width="540" height="104" rx="12" />
+  <text class="step" x="120" y="158">01 · INPUT</text>
+  <text class="label" x="120" y="190">原始文档</text>
+  <text class="detail" x="120" y="214">覆盖不同文档类型、版式与页面难度</text>
+
+  <path class="arrow" d="M 360 229 L 360 258" />
+
+  <rect class="node-accent" x="90" y="270" width="540" height="104" rx="12" />
+  <text class="step" x="120" y="303">02 · ANNOTATE</text>
+  <text class="label" x="120" y="335">多模态大模型预标注</text>
+  <text class="detail" x="120" y="359">按照统一协议输出区域类别与边界坐标</text>
+
+  <path class="arrow" d="M 360 374 L 360 403" />
+
+  <rect class="node" x="90" y="415" width="540" height="104" rx="12" />
+  <text class="step" x="120" y="448">03 · VERIFY</text>
+  <text class="label" x="120" y="480">规则校验与人工抽检</text>
+  <text class="detail" x="120" y="504">过滤异常结果，沉淀可训练的数据版本</text>
+
+  <path class="arrow" d="M 360 519 L 360 548" />
+
+  <rect class="node-accent" x="90" y="560" width="540" height="104" rx="12" />
+  <text class="step" x="120" y="593">04 · TRAIN</text>
+  <text class="label" x="120" y="625">训练 Layout 检测模型</text>
+  <text class="detail" x="120" y="649">用稳定数据建立可复现、可评估的基线</text>
+
+  <path class="arrow" d="M 360 664 L 360 693" />
+
+  <rect class="node" x="90" y="705" width="540" height="104" rx="12" />
+  <text class="step" x="120" y="738">05 · MINE</text>
+  <text class="label" x="120" y="770">批量推理与困难样本挖掘</text>
+  <text class="detail" x="120" y="794">结合低置信、规则异常与模型分歧选择样本</text>
+
+  <path class="loop" d="M 360 809 L 360 856 L 52 856 L 52 322 L 78 322" />
+  <text class="loop-label" x="382" y="863">纠错 · 补标 · 更新数据版本</text>
+  <text class="subtitle" x="360" y="905" text-anchor="middle">独立测试集始终置于闭环之外</text>
+</svg>
