@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 8);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="intro">
+				<h1>{SITE_TITLE}</h1>
+				<p>{SITE_DESCRIPTION}</p>
+			</section>
+			<section aria-labelledby="latest-posts">
+				<div class="section-heading">
+					<h2 id="latest-posts">最新文章</h2>
+					<a href="/blog">查看全部</a>
+				</div>
+				<ul class="post-list">
+					{posts.map((post) => (
+						<li>
+							<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+							<FormattedDate date={post.data.pubDate} />
+						</li>
+					))}
+				</ul>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.intro { padding: 4rem 0 3rem; }
+	.intro h1 {
+		margin-bottom: 0.5rem;
+		font-size: clamp(2.2rem, 8vw, 3.7rem);
+		letter-spacing: -0.045em;
+	}
+	.intro p { margin: 0; color: var(--muted); font-size: 1.08rem; }
+	.section-heading {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 1rem;
+	}
+	.section-heading h2 { font-size: 1.1rem; }
+	.section-heading a { font-size: 0.9rem; }
+</style>
