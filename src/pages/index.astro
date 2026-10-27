@@ -17,15 +17,9 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 	<body class="journal-home">
 		<Header />
 		<main class="home">
-			<section class="intro">
-				<h1>你好，我是 Tsan1024<span>。</span></h1>
-				<p class="lead">记录学习与实践，也写阅读、想法和日常。</p>
-				<a class="about-link" href="/about">关于这个博客 <span aria-hidden="true">→</span></a>
-			</section>
-
 			<div class="content-grid">
 				<section class="latest" aria-labelledby="latest-posts">
-					<div class="section-heading"><h2 id="latest-posts">最新文章</h2><a href="/blog">全部文章 <span aria-hidden="true">→</span></a></div>
+					<div class="section-heading"><h1 id="latest-posts">文章</h1><a href="/blog">查看归档 <span aria-hidden="true">→</span></a></div>
 					<ul class="post-list">{posts.map((post) => (
 						<li><article><FormattedDate date={post.data.pubDate} /><h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2><p class="post-description">{post.data.description}</p></article></li>
 					))}</ul>
@@ -42,30 +36,23 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 	:global(.journal-home > header) { border-bottom: 0; }
 	:global(.journal-home > footer .footer-note) { display: none; }
 	.home { width: min(calc(100% - 3rem), 760px); min-height: 0; }
-	.intro { padding: 4.5rem 0 3.5rem; }
-	.intro h1 { margin: 0; font-family: inherit; font-size: clamp(1.6rem, 4vw, 2.1rem); font-weight: 650; line-height: 1.5; letter-spacing: -0.035em; }
-	.intro h1 span { color: var(--accent); }
-	.lead { margin: 1rem 0 0; color: var(--muted); font-size: 1rem; line-height: 1.9; }
-	.about-link { display: inline-block; margin-top: 1.2rem; font-size: 0.85rem; text-decoration: none; }
-	.about-link span { margin-left: 0.25rem; }
-	.content-grid { padding: 2rem 0 0; border-top: 1px solid var(--border); }
+	.content-grid { padding: 3.5rem 0 0; }
 	.latest { min-width: 0; }
-	.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem; }
-	.section-heading h2 { margin: 0; font-family: inherit; font-size: 0.9rem; font-weight: 600; color: var(--muted); }
+	.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-bottom: 1.3rem; border-bottom: 1px solid var(--border); }
+	.section-heading h1 { margin: 0; font-family: inherit; font-size: 1.4rem; font-weight: 600; letter-spacing: -0.025em; }
 	.section-heading > a { color: var(--muted); font-size: 0.82rem; text-decoration: none; white-space: nowrap; }
 	.post-list { border-top: 0; }
-	.post-list > li { padding: 1.7rem 0; }
+	.post-list > li { padding: 2rem 0; }
 	.post-list article { display: flex; flex-direction: column; gap: 0; }
 	.post-list :global(time) { margin: 0 0 0.6rem; font-size: 0.78rem; color: var(--muted); }
-	.post-list h2 { max-width: 660px; font-size: 1.15rem; line-height: 1.65; }
+	.post-list h2 { max-width: 660px; font-size: 1.25rem; line-height: 1.65; }
 	.post-description { max-width: 650px; margin-top: 0.55rem; font-size: 0.92rem; line-height: 1.85; }
 	.post-list > li:last-child { border-bottom: 0; }
 	:global(.journal-home > footer) { margin-top: 3rem; }
 	@media (prefers-color-scheme: dark) { :global(body.journal-home) { --background: #191c19; } }
 	@media (max-width: 760px) {
 		:global(.journal-home > header nav), :global(.journal-home > footer) { width: calc(100% - 3rem); }
-		.intro { padding: 3rem 0 2.8rem; }
-		.content-grid { padding-top: 1.5rem; }
+		.content-grid { padding-top: 2rem; }
 		.post-list h2 { font-size: 1.08rem; }
 	}
 </style>
