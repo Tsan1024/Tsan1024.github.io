@@ -6,19 +6,29 @@ import Header from '../components/Header.astro';
 
 <!doctype html>
 <html lang="zh-CN">
-	<head><BaseHead title="About · Tsan1024" description="关于 Tsan1024：技术、创造与生活的长期记录。" /></head>
+	<head><BaseHead title="About · Tsan1024" description="About Tsan1024 — making, learning, and thinking along the way. 中英文介绍。" /></head>
 	<body>
 		<Header />
 		<main>
-			<header class="page-heading"><h1>About</h1><p>一个仍在持续构建、持续修正的人。</p></header>
-			<div class="prose about-copy">
+			<header class="page-heading"><h1>About</h1><p lang="en">Still building, still figuring things out.</p><p>持续构建，也不断重新认识自己。</p></header>
+			<nav class="language-links" aria-label="About languages"><a href="#about-zh" lang="zh-CN">中文</a><span aria-hidden="true">/</span><a href="#about-en" lang="en">English</a></nav>
+			<section id="about-zh" class="prose about-copy" lang="zh-CN" aria-label="中文介绍">
 				<p class="opening">你好，我是 Tsan1024。</p>
 				<p>我关注 AI 与软件工程，也对工具如何改变人的工作、判断与创造方式保持好奇。这里不仅保存技术方案，也记录阅读、生活，以及那些尚未形成标准答案的问题。</p>
 				<p>我相信真正有价值的知识通常来自实践：先进入一个具体问题，尝试构建，面对失败，再回头理解系统为何如此运转。写作则让我把这些零散经验整理成可以长期保留的东西。</p>
 				<h2>这里会写什么</h2>
 				<ul><li><strong>AI 与工程</strong>：模型、数据、系统设计与生产实践；</li><li><strong>创造与工具</strong>：如何构建真正有用、能够长期维护的东西；</li><li><strong>阅读与生活</strong>：技术之外的兴趣、变化和阶段性思考。</li></ul>
 				<p>如果你也在解决类似的问题，欢迎通过 <a href="https://github.com/Tsan1024">GitHub</a> 找到我，或者使用 <a href="/rss.xml">RSS</a> 订阅这里的更新。</p>
-			</div>
+			</section>
+			<section id="about-en" class="prose about-copy english-copy" lang="en" aria-labelledby="english-heading">
+				<h2 id="english-heading">In English</h2>
+				<p class="opening">Hi, I'm Tsan1024.</p>
+				<p>I'm interested in AI and software engineering, and in how tools change the way we work, make decisions, and create. This blog is a place for technical ideas, reading notes, everyday life, and questions I haven't quite answered yet.</p>
+				<p>I learn through practice: working on a concrete problem, building something, encountering failures, and stepping back to understand how the system works. Writing helps me turn those scattered experiences into something I can return to.</p>
+				<h2>What I write about</h2>
+				<ul><li><strong>AI & engineering</strong>: models, data, system design, and work in production;</li><li><strong>Making & tools</strong>: building useful things that can be maintained over time;</li><li><strong>Reading & life</strong>: interests beyond technology, changes, and reflections along the way.</li></ul>
+				<p>If you're exploring similar questions, you can find me on <a href="https://github.com/Tsan1024">GitHub</a> or subscribe via <a href="/rss.xml">RSS</a>.</p>
+			</section>
 		</main>
 		<Footer />
 	</body>
@@ -28,4 +38,9 @@ import Header from '../components/Header.astro';
 	.about-copy { padding: 0; }
 	.opening { font-size: 1.1rem; }
 	.about-copy h2 { margin-top: 2.5rem; font-size: 1.25rem; }
+	.language-links { display: flex; gap: 0.6rem; margin: -0.5rem 0 2rem; font-size: 0.85rem; color: var(--muted); }
+	.language-links a { text-decoration: none; }
+	.page-heading p + p { margin-top: 0.35rem; }
+	.about-copy { scroll-margin-top: 2rem; }
+	.english-copy { margin-top: 3.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
 </style>

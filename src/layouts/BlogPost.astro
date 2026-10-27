@@ -23,7 +23,7 @@ const { title, description, pubDate, updatedDate, tags } = Astro.props;
 					<h1>{title}</h1>
 					<div class="metadata">
 						<FormattedDate date={pubDate} />
-						{updatedDate && <span>· 更新于 <FormattedDate date={updatedDate} /></span>}
+						{updatedDate && <span>· Updated <FormattedDate date={updatedDate} /></span>}
 					</div>
 					{tags.length > 0 && <ul class="tag-list">{tags.map((tag) => <li>{tag}</li>)}</ul>}
 				</header>
