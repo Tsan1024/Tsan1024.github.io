@@ -1,0 +1,42 @@
+---
+interface Props { count: number; index: number; }
+const { count, index } = Astro.props;
+const visible = Math.min(count, 12);
+---
+
+<svg viewBox="0 0 600 220" aria-hidden="true" focusable="false" class="shelf-drawing">
+	<defs>
+		<linearGradient id={`wood-${index}`} x1="0" y1="0" x2="0" y2="1"><stop stop-color="var(--wood-front)"/><stop offset="1" stop-color="var(--wood-dark)"/></linearGradient>
+	</defs>
+	<!-- Recess first, then supports, books and the front shelf lip. -->
+	<rect x="26" y="21" width="548" height="169" rx="2" fill="var(--wood-back)"/>
+	{[92, 238, 384, 530].map(x => <rect x={x} y="21" width="1" height="169" fill="var(--wood-seam)"/>)}
+	<path d="M26 21H574L562 33H38Z" fill="var(--wood-dark)"/>
+	<path d="M26 21L38 33V178L26 190Z" fill="var(--wood-dark)"/>
+	<path d="M574 21L562 33V178L574 190Z" fill="var(--wood-mid)"/>
+	{[40, 560].map(x => Array.from({ length: 9 }, (_, i) => <circle cx={x} cy={49 + i * 14} r="1.4" fill="var(--wood-seam)"/>))}
+	{[45, 545].map(x => <><rect x={x} y="166" width="10" height="12" rx="1" fill="var(--metal)"/><rect x={x + 2} y="168" width="6" height="2" fill="var(--wood-light)"/></>)}
+	<path d="M26 178H574L586 190H14Z" fill="var(--wood-light)"/>
+	{Array.from({ length: visible }, (_, i) => {
+		const x = 70 + i * 35;
+		const height = 102 + (i % 3) * 10;
+		return <g>
+			<rect x={x + 3} y={178 - height} width="30" height={height} rx="2" fill="var(--book-shadow)"/>
+			<rect x={x} y={176 - height} width="28" height={height} rx="2" fill="var(--book-cloth)"/>
+			<rect x={x + 2} y={177 - height} width="2" height={height - 2} fill="var(--book-highlight)"/>
+			<path d={`M${x + 5} ${188 - height}h18 M${x + 5} 164h18`} stroke="var(--book-foil)" stroke-width="1"/>
+			<rect x={x + 7} y={199 - height} width="14" height="33" rx="1" fill="var(--book-label)"/>
+			<path d={`M${x + 11} ${205 - height}v20 M${x + 17} ${205 - height}v15`} stroke="var(--book-foil)" stroke-width="1"/>
+		</g>;
+	})}
+	{[59, 76 + visible * 35].map(x => <g><rect x={x} y="141" width="4" height="37" fill="var(--metal)"/><rect x={x - 3} y="175" width="16" height="3" rx="1" fill="var(--metal)"/></g>)}
+	<rect x="14" y="190" width="572" height="14" rx="1" fill={`url(#wood-${index})`}/>
+	<rect x="14" y="190" width="572" height="2" fill="var(--wood-light)"/>
+	<rect x="14" y="203" width="572" height="3" fill="var(--wood-seam)" opacity="0.35"/>
+	{[14, 574].map(x => <><rect x={x} y="12" width="12" height="178" fill={`url(#wood-${index})`}/><rect x={x} y="12" width="2" height="178" fill="var(--wood-light)"/></>)}
+	<rect x="10" y="8" width="580" height="13" rx="1" fill="var(--wood-front)"/>
+	<rect x="10" y="8" width="580" height="2" fill="var(--wood-light)"/>
+	{[20, 580].map(x => [15, 197].map(y => <g><circle cx={x} cy={y} r="2" fill="var(--metal)"/><path d={`M${x - 1} ${y}h2`} stroke="var(--wood-dark)" stroke-width="0.6"/></g>))}
+	<rect x="271" y="191" width="58" height="10" rx="1" fill="var(--metal)"/>
+	<rect x="277" y="194" width="46" height="4" fill="var(--wood-back)"/>
+</svg>

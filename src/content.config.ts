@@ -18,4 +18,16 @@ const blog = defineCollection({
 		}),
 });
 
-export const collections = { blog };
+const bookmarks = defineCollection({
+	loader: glob({ base: './src/content/bookmarks', pattern: '**/*.md' }),
+	schema: z.object({
+		title: z.string(),
+		coverTitle: z.string().optional(),
+		url: z.url().refine((value) => /^https?:\/\//.test(value), 'Use an HTTP or HTTPS link'),
+		author: z.string(),
+		topic: z.string(),
+		date: z.coerce.date(),
+	}),
+});
+
+export const collections = { blog, bookmarks };

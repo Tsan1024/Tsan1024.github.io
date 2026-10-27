@@ -20,19 +20,24 @@ draft: false
 
 ## 收藏
 
-收藏位于 `src/content/bookmarks.md`，新条目放在最上方。添加第一篇时删除“暂无收藏。”：
+每条收藏是 `src/content/bookmarks/` 下一个 Markdown 文件：
 
 ```md
-## [文章标题](https://example.com/article)
-
-作者或来源 · 收藏于 YYYY-MM-DD
+---
+title: "文章标题"
+coverTitle: "简短书封标题" # 可选，省略时使用完整标题
+url: "https://example.com/article"
+author: "作者或来源"
+topic: "AI 基础"
+date: 2026-10-27
+---
 
 两三句自己的点评。
-
-[阅读原文 ↗](https://example.com/article)
 ```
 
-收藏展示在 `/bookmarks/`，不进入文章归档和文章 RSS。
+同一 `topic` 自动归到同一书架，新主题自动增加书架。收藏按日期倒序排列，书封、计数、原文入口和 List 视图均自动生成；不需要找封面图或重复维护链接。
+
+收藏展示在 `/bookmarks/`，不进入文章归档和文章 RSS。无需 JavaScript 也可用书架和书本的展开功能；Library / List 切换在 JavaScript 可用时启用。
 
 ## 本地预览
 

@@ -1,28 +1,132 @@
 ---
+import { getCollection, render } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { Content } from '../content/bookmarks.md';
+import LibraryShelf from '../components/LibraryShelf.astro';
+
+const entries = (await getCollection('bookmarks')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const books = await Promise.all(entries.map(async entry => ({ ...entry, ...await render(entry) })));
+const topics = [...new Set(books.map(book => book.data.topic))];
 ---
 
 <!doctype html>
 <html lang="zh-CN">
-	<head><BaseHead title="Bookmarks · Tsan1024" description="Articles worth returning to, with a few thoughts of my own." /></head>
+	<head><BaseHead title="Bookmarks · Tsan1024" description="A little library of articles worth returning to, with a few thoughts of my own." /></head>
 	<body>
 		<Header />
-		<main>
-			<header class="page-heading"><h1>Bookmarks</h1><p lang="en">Worth reading, worth returning to.</p></header>
-			<div class="prose bookmarks"><Content /></div>
+		<main class="library-page">
+			<header class="page-heading"><h1>Bookmarks</h1><p lang="en">A little library of things worth returning to.</p></header>
+			<div class="library-toolbar">
+				<p>{topics.length} {topics.length === 1 ? 'shelf' : 'shelves'} <span>·</span> {books.length} {books.length === 1 ? 'bookmark' : 'bookmarks'}</p>
+				<div class="view-switch" role="group" aria-label="View" hidden><button type="button" data-view="library" aria-pressed="true">Library</button><button type="button" data-view="list" aria-pressed="false">List</button></div>
+			</div>
+			<div id="library-view">
+				<p class="hint">选一个主题书架，再打开一本书。</p>
+				<div class="shelves">
+					{topics.map((topic, index) => {
+						const shelfBooks = books.filter(book => book.data.topic === topic);
+						return <details class="shelf" name="library-shelves">
+							<summary class="shelf-summary"><div class="shelf-caption"><span class="shelf-number">{String(index + 1).padStart(2, '0')}</span><h2>{topic}</h2><span class="shelf-count">{shelfBooks.length} {shelfBooks.length === 1 ? 'bookmark' : 'bookmarks'}</span><span class="shelf-toggle" aria-hidden="true">+</span></div><LibraryShelf count={shelfBooks.length} index={index} /><span class="shelf-action"><span class="when-closed">Browse shelf</span><span class="when-open">Close shelf</span><span aria-hidden="true">↗</span></span></summary>
+							<div class="shelf-content">
+								<p class="shelf-instruction">点击书封查看点评与原文。</p>
+								<div class="books">
+									{shelfBooks.map(({ id, data, Content }, bookIndex) => <details class="book" name={`books-${index}`}>
+										<summary aria-label={`打开收藏：${data.title}`}>
+											<div class="book-cover"><span class="cover-series">COLLECTED READING</span><span class="cover-title">{data.coverTitle || data.title}</span><span class="cover-rule" aria-hidden="true"></span><span class="cover-author">{data.author}</span><span class="cover-bottom"><span>{topic}</span><span>{String(bookIndex + 1).padStart(2, '0')}</span></span></div>
+											<span class="book-caption">{data.title}</span><span class="book-action"><span class="when-closed">Open book</span><span class="when-open">Close book</span> <span aria-hidden="true">↓</span></span>
+										</summary>
+										<div class="book-note" id={`book-${id}`}><p class="note-meta">{data.author} · {data.date.toISOString().slice(0, 10)}</p><div class="prose"><Content /></div><a class="source-link" href={data.url} target="_blank" rel="noopener noreferrer">阅读原文 ↗ <span class="sr-only">（在新标签页打开）</span></a><p class="source-domain">{new URL(data.url).hostname}</p></div>
+									</details>)}
+								</div>
+							</div>
+						</details>;
+					})}
+				</div>
+				{books.length === 0 && <p class="hint">暂无收藏。</p>}
+			</div>
+			<div id="list-view" hidden>
+				{topics.map(topic => <section class="list-topic"><h2>{topic}</h2>{books.filter(book => book.data.topic === topic).map(({ data, Content }) => <article class="list-book"><h3><a href={data.url} target="_blank" rel="noopener noreferrer">{data.title} ↗</a></h3><p class="note-meta">{data.author} · {data.date.toISOString().slice(0, 10)}</p><div class="prose"><Content /></div><a class="source-link" href={data.url} target="_blank" rel="noopener noreferrer">阅读原文 ↗</a></article>)}</section>)}
+			</div>
 		</main>
 		<Footer />
 	</body>
 </html>
 
+<script>
+	const controls = document.querySelector<HTMLElement>('.view-switch');
+	const library = document.querySelector<HTMLElement>('#library-view');
+	const list = document.querySelector<HTMLElement>('#list-view');
+	if (controls && library && list) {
+		controls.hidden = false;
+		controls.querySelectorAll<HTMLButtonElement>('button').forEach(button => {
+			button.addEventListener('click', () => {
+				const isLibrary = button.dataset.view === 'library';
+				library.hidden = !isLibrary;
+				list.hidden = isLibrary;
+				controls.querySelectorAll('button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+			});
+		});
+	}
+</script>
+
 <style>
-	.bookmarks { color: var(--muted); }
-	.bookmarks :global(h2) { margin: 2.5rem 0 0.5rem; font-size: 1.25rem; line-height: 1.6; }
-	.bookmarks :global(h2:first-child) { margin-top: 0; }
-	.bookmarks :global(h2 a) { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent); text-underline-offset: 0.2em; }
-	.bookmarks :global(h2 a:hover) { text-decoration-color: currentColor; }
-	.bookmarks :global(h2 + p) { margin-top: 0; font-size: 0.8rem; }
+	.library-page {
+		--wood-light: #e7dfd0; --wood-front: #cfc4af; --wood-mid: #d8cebd; --wood-dark: #b8ab95; --wood-back: #eee9de; --wood-seam: #a99a82; --metal: #a7956d;
+		--book-cloth: #49695e; --book-highlight: #789086; --book-shadow: #293f36; --book-label: #3f5c51; --book-foil: #d6cba8;
+	}
+	.library-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+	.library-toolbar p { margin: 0; color: var(--muted); font-size: 0.78rem; }
+	.library-toolbar p span { padding: 0 0.4rem; }
+	.view-switch { display: flex; gap: 0.25rem; border: 1px solid var(--border); border-radius: 5px; padding: 3px; }
+	[hidden] { display: none !important; }
+	button { border: 0; font: inherit; cursor: pointer; }
+	.view-switch button { padding: 0.3rem 0.65rem; font-size: 0.75rem; background: transparent; color: var(--muted); border-radius: 2px; }
+	.view-switch button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+	button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+	.hint { margin: 1rem 0 2rem; color: var(--muted); font-size: 0.82rem; }
+	.shelves { display: grid; gap: 1.8rem; }
+	.shelf { border: 1px solid var(--border); border-radius: 6px; background: color-mix(in srgb, var(--surface) 45%, var(--background)); }
+	summary { list-style: none; cursor: pointer; }
+	summary::-webkit-details-marker { display: none; }
+	.shelf-summary { padding: 1.3rem 1.3rem 0.85rem; }
+	.shelf-caption { display: flex; align-items: baseline; gap: 0.8rem; }
+	.shelf-number { color: var(--muted); font-size: 0.65rem; letter-spacing: 0.08em; }
+	.shelf-caption h2 { margin: 0; font-size: 1.05rem; }
+	.shelf-count { margin-left: auto; color: var(--muted); font-size: 0.72rem; }
+	.shelf-toggle { color: var(--muted); font-size: 1rem; }
+	.shelf[open] > summary .shelf-toggle { transform: rotate(45deg); }
+	.shelf-summary :global(svg) { display: block; width: 100%; height: auto; margin: 1rem 0 0; filter: drop-shadow(0 8px 5px rgb(0 0 0 / 0.07)); transition: transform 400ms ease; }
+	.shelf-summary:hover :global(svg) { transform: translateY(-3px); }
+	.shelf-action { display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem; color: var(--accent); font-size: 0.73rem; }
+	.when-open { display: none; }
+	.shelf[open] > summary .when-open, .book[open] > summary .when-open { display: inline; }
+	.shelf[open] > summary .when-closed, .book[open] > summary .when-closed { display: none; }
+	.shelf-content { padding: 1.5rem; border-top: 1px solid var(--border); }
+	.shelf-instruction { margin: 0 0 1.5rem; color: var(--muted); font-size: 0.8rem; }
+	.books { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); align-items: start; gap: 2rem; }
+	.book { min-width: 0; }
+	.book summary { max-width: 260px; }
+	.book-cover { position: relative; display: flex; flex-direction: column; width: 190px; min-height: 250px; padding: 1.3rem 1.2rem 1rem 1.5rem; border-radius: 2px 5px 5px 2px; background: var(--book-cloth); color: var(--book-foil); border-left: 7px solid var(--book-shadow); box-shadow: 3px 0 0 var(--wood-light), 5px 1px 0 var(--wood-dark), 8px 9px 14px rgb(0 0 0 / 0.12), inset 1px 0 0 var(--book-highlight); transition: transform 350ms ease, box-shadow 350ms ease; }
+	.book-cover::after { content: ''; position: absolute; inset: 8px; border: 1px solid color-mix(in srgb, var(--book-foil) 25%, transparent); border-left: 0; pointer-events: none; }
+	.book summary:hover .book-cover, .book[open] .book-cover { transform: translateY(-5px) rotate(-1deg); }
+	.cover-series { font-size: 0.48rem; letter-spacing: 0.16em; }
+	.cover-title { white-space: pre-line; overflow-wrap: anywhere; margin-top: 1.8rem; font-family: Georgia, 'Songti SC', serif; font-size: 1.5rem; line-height: 1.3; }
+	.cover-rule { width: 25px; height: 1px; background: var(--book-foil); margin-top: 1.4rem; opacity: 0.6; }
+	.cover-author { margin-top: 0.7rem; font-size: 0.68rem; }
+	.cover-bottom { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: auto; padding-top: 1.7rem; font-size: 0.58rem; }
+	.book-caption { display: block; margin-top: 1.25rem; font-size: 0.9rem; line-height: 1.7; font-weight: 600; }
+	.book-action { display: block; margin-top: 0.5rem; font-size: 0.72rem; color: var(--accent); }
+	.book-note { margin-top: 1.25rem; padding: 1.1rem; border-left: 2px solid var(--accent); background: var(--background); overflow-wrap: anywhere; }
+	.note-meta { color: var(--muted); font-size: 0.75rem; margin: 0 0 1rem; }
+	.book-note .prose, .list-book .prose { font-size: 0.9rem; line-height: 1.85; }
+	.source-link { display: inline-block; font-size: 0.86rem; margin-top: 0.75rem; }
+	.source-domain { color: var(--muted); font-size: 0.7rem; margin: 0.35rem 0 0; }
+	.list-topic { padding-top: 2rem; }
+	.list-topic > h2 { font-size: 1.1rem; margin: 0 0 1.5rem; }
+	.list-book + .list-book { margin-top: 2.5rem; }
+	.list-book h3 { font-size: 1.2rem; margin: 0 0 0.6rem; }
+	@media (max-width: 520px) { .shelf-summary { padding: 1rem 0.8rem 0.8rem; }.shelf-content { padding: 1.25rem; }.book-cover { width: 175px; min-height: 235px; }.shelf-caption { gap: 0.55rem; }.shelf-count { font-size: 0.65rem; } }
+	@media (prefers-color-scheme: dark) { .library-page { --wood-light: #685e4d; --wood-front: #514839; --wood-mid: #484032; --wood-dark: #302c23; --wood-back: #282820; --wood-seam: #181b16; --metal: #9b8e6e; --book-cloth: #405d51; --book-highlight: #718777; --book-shadow: #223b2e; --book-label: #324c3f; --book-foil: #e0d7b6; } }
+	@media (prefers-reduced-motion: reduce) { .book-cover, .shelf-summary :global(svg) { transition: none; }.book summary:hover .book-cover, .book[open] .book-cover, .shelf-summary:hover :global(svg) { transform: none; } }
 </style>
