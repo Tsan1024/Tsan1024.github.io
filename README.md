@@ -28,6 +28,8 @@ draft: false
 作者或来源 · 收藏于 YYYY-MM-DD
 
 两三句自己的点评。
+
+[阅读原文 ↗](https://example.com/article)
 ```
 
 收藏展示在 `/bookmarks/`，不进入文章归档和文章 RSS。
