@@ -29,4 +29,21 @@ const bookmarks = defineCollection({
 	}),
 });
 
-export const collections = { blog, bookmarks };
+const productLink = z.url().refine((value) => /^https?:\/\//.test(value), 'Use an HTTP or HTTPS link');
+
+const products = defineCollection({
+	loader: glob({ base: './src/content/products', pattern: '**/*.md' }),
+	schema: z.object({
+		title: z.string(),
+		description: z.string(),
+		descriptionEn: z.string().optional(),
+		download: z.boolean().default(false),
+		url: productLink.optional(),
+		source: productLink.optional(),
+		tags: z.array(z.string()).default([]),
+		order: z.number().default(0),
+		draft: z.boolean().default(false),
+	}),
+});
+
+export const collections = { blog, bookmarks, products };

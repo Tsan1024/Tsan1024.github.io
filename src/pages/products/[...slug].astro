@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+export async function getStaticPaths() {
+	const products = await getCollection('products', ({ data }) => !data.draft);
+	return products.map((product) => ({ params: { slug: product.id }, props: { product } }));
+}
+
+interface Props { product: CollectionEntry<'products'> }
+const { product } = Astro.props;
+const { data } = product;
+const { Content } = await render(product);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head><BaseHead title={`${data.title} · ${SITE_TITLE}`} description={data.description} /></head>
+	<body>
+		<Header />
+		<main>
+			<article>
+				<header class="page-heading">
+					<a class="back-link" href="/products/">← All products</a>
+					<h1>{data.title}</h1>
+					{data.descriptionEn && <p lang="en">{data.descriptionEn}</p>}
+					{!data.descriptionEn && <p>{data.description}</p>}
+					{data.tags.length > 0 && <ul class="tag-list">{data.tags.map((tag) => <li>{tag}</li>)}</ul>}
+					{(data.url || data.source) && <div class="product-links">
+						{data.url && <a href={data.url}>{data.download ? 'Download ↗' : 'Visit website ↗'}</a>}
+						{data.source && <a href={data.source}>Source code ↗</a>}
+					</div>}
+				</header>
+				<div class="prose"><Content /></div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.back-link { display: inline-block; margin-bottom: 1.5rem; font-size: 0.85rem; }
+	.product-links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; margin-top: 1.5rem; font-size: 0.9rem; }
+</style>

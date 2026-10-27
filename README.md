@@ -38,6 +38,29 @@ date: 2026-10-27
 
 收藏展示在 `/bookmarks/`，不进入文章归档和文章 RSS。无需 JavaScript 也可用书架和书本的展开功能；Library / List 切换在 JavaScript 可用时启用。
 
+## 产品
+
+导航中的 Products 展示在 `/products/`。每个产品是 `src/content/products/` 下的一个 Markdown 文件，文件名对应详情页地址（例如 `my-tool.md` → `/products/my-tool/`）：
+
+```md
+---
+title: "产品名称"
+description: "一句话介绍产品解决的问题"
+descriptionEn: "A short English introduction."
+url: "https://example.com"
+source: "https://github.com/username/repo"
+tags: [AI, 工具]
+order: 0
+draft: false
+---
+
+介绍产品的功能、使用场景和上手方式。
+```
+
+列表优先显示 `descriptionEn` 英文摘要，未填写时显示中文摘要；详情正文可以按英文、中文的顺序撰写。下载类产品可设置 `download: true`，将入口按钮显示为 Download。
+
+`url`（产品入口）、`source`（源码）和 `tags` 均可省略；`order` 越小越靠前，默认为 0。`draft: true` 的产品不会出现在列表或生成详情页。目录中的 `example.md` 是草稿模板，复制并修改后设为 `draft: false` 即可发布。产品不进入文章归档和 RSS。
+
 ## 本地预览
 
 ```sh
