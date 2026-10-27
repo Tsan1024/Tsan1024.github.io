@@ -22,16 +22,16 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 				<div class="view-switch" role="group" aria-label="View" hidden><button type="button" data-view="library" aria-pressed="true">Library</button><button type="button" data-view="list" aria-pressed="false">List</button></div>
 			</div>
 			<div id="library-view">
-				<p class="hint">选一个主题书架，再打开一本书。</p>
+				<p class="hint">按主题浏览书架，或直接点击书目查看点评。</p>
 				<div class="shelves">
 					{topics.map((topic, index) => {
 						const shelfBooks = books.filter(book => book.data.topic === topic);
-						return <details class="shelf" name="library-shelves">
-							<summary class="shelf-summary"><div class="shelf-caption"><span class="shelf-number">{String(index + 1).padStart(2, '0')}</span><h2>{topic}</h2><span class="shelf-count">{shelfBooks.length} {shelfBooks.length === 1 ? 'bookmark' : 'bookmarks'}</span><span class="shelf-toggle" aria-hidden="true">+</span></div><LibraryShelf count={shelfBooks.length} index={index} /><span class="shelf-action"><span class="when-closed">Browse shelf</span><span class="when-open">Close shelf</span><span aria-hidden="true">↗</span></span></summary>
+						return <div class="shelf-group"><details class="shelf" name="library-shelves" id={`shelf-${index}`}>
+							<summary class="shelf-summary"><div class="shelf-caption"><span class="shelf-number">{String(index + 1).padStart(2, '0')}</span><h2>{topic}</h2><span class="shelf-count">{shelfBooks.length} {shelfBooks.length === 1 ? 'bookmark' : 'bookmarks'}</span><span class="shelf-toggle" aria-hidden="true">+</span></div><LibraryShelf titles={shelfBooks.map(book => book.data.title)} index={index} /><span class="shelf-action"><span class="when-closed">Browse shelf</span><span class="when-open">Close shelf</span><span aria-hidden="true">↗</span></span></summary>
 							<div class="shelf-content">
 								<p class="shelf-instruction">点击书封查看点评与原文。</p>
 								<div class="books">
-									{shelfBooks.map(({ id, data, Content }, bookIndex) => <details class="book" name={`books-${index}`}>
+									{shelfBooks.map(({ id, data, Content }, bookIndex) => <details class="book" name={`books-${index}`} id={`entry-${id}`}>
 										<summary aria-label={`打开收藏：${data.title}`}>
 											<div class="book-cover"><span class="cover-series">COLLECTED READING</span><span class="cover-title">{data.coverTitle || data.title}</span><span class="cover-rule" aria-hidden="true"></span><span class="cover-author">{data.author}</span><span class="cover-bottom"><span>{topic}</span><span>{String(bookIndex + 1).padStart(2, '0')}</span></span></div>
 											<span class="book-caption">{data.title}</span><span class="book-action"><span class="when-closed">Open book</span><span class="when-open">Close book</span> <span aria-hidden="true">↓</span></span>
@@ -40,7 +40,7 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 									</details>)}
 								</div>
 							</div>
-						</details>;
+						</details><ol class="shelf-index" aria-label={`${topic}书目`}>{shelfBooks.map(({id, data}, bookIndex) => <li><span class="index-number">{String(bookIndex + 1).padStart(2, '0')}</span><div><a href={`#book-${id}`} data-open-book={`entry-${id}`} data-open-shelf={`shelf-${index}`}>{data.title}</a><span class="index-author">{data.author}</span></div></li>)}</ol></div>;
 					})}
 				</div>
 				{books.length === 0 && <p class="hint">暂无收藏。</p>}
@@ -54,6 +54,18 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 </html>
 
 <script>
+	document.querySelectorAll<HTMLAnchorElement>('[data-open-book]').forEach(link => {
+		link.addEventListener('click', (event) => {
+			const shelf = document.getElementById(link.dataset.openShelf || '');
+			const book = document.getElementById(link.dataset.openBook || '');
+			if (!(shelf instanceof HTMLDetailsElement) || !(book instanceof HTMLDetailsElement)) return;
+			event.preventDefault();
+			shelf.open = true;
+			book.open = true;
+			book.querySelector('summary')?.focus({preventScroll: true});
+			book.scrollIntoView({block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+		});
+	});
 	const controls = document.querySelector<HTMLElement>('.view-switch');
 	const library = document.querySelector<HTMLElement>('#library-view');
 	const list = document.querySelector<HTMLElement>('#list-view');
@@ -86,6 +98,12 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 	button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 	.hint { margin: 1rem 0 2rem; color: var(--muted); font-size: 0.82rem; }
 	.shelves { display: grid; gap: 1.8rem; }
+	.shelf-index { margin: 0; padding: 1rem 0 0; list-style: none; }
+	.shelf-index li { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); gap: 0.65rem; padding: 0.55rem 0; align-items: baseline; }
+	.index-number { color: var(--muted); font-size: 0.7rem; font-variant-numeric: tabular-nums; }
+	.shelf-index a { font-size: 0.9rem; line-height: 1.7; text-decoration-thickness: 1px; }
+	.index-author { display: block; margin-top: 0.15rem; color: var(--muted); font-size: 0.74rem; }
+	.book { scroll-margin-top: 1.5rem; }
 	.shelf { border: 1px solid var(--border); border-radius: 6px; background: color-mix(in srgb, var(--surface) 45%, var(--background)); }
 	summary { list-style: none; cursor: pointer; }
 	summary::-webkit-details-marker { display: none; }
