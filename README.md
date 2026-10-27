@@ -1,73 +1,35 @@
-# Tsan1024
+# About
 
-一个使用 Astro 和标准 Markdown 构建的极简个人博客。
+Still building, still figuring things out.
 
-## 写作
-
-文章位于 `src/content/blog/`，每篇文章是一个 `.md` 文件：
-
-```md
----
-title: "文章标题"
-description: "一句话摘要"
-pubDate: 2026-08-27
-tags: [Astro, GitHub]
-draft: false
 ---
 
-正文从这里开始。
-```
+Hi, I'm Tsan1024.
 
-## 收藏
+I'm interested in AI and software engineering, and curious about how tools change the way we work, make decisions, and create. This blog is a place for technical ideas, reading notes, everyday life, and questions I haven't yet answered.
 
-每条收藏是 `src/content/bookmarks/` 下一个 Markdown 文件：
+I like thinking through problems: what we're really trying to solve, how to define the problem clearly, and what possible solutions there might be. Reading, research, analysis, and practice help me keep revising my understanding. Writing helps me clarify my thinking and recognize what I haven't yet figured out.
 
-```md
----
-title: "文章标题"
-url: "https://example.com/article"
-author: "作者或来源"
-topic: "AI 基础"
-date: 2026-10-27
----
+## What I write about
 
-两三句自己的点评。
-```
+- **AI & engineering**: models, data, system design, and production practice, as well as how AI affects organizations and the way people collaborate;
+- **Making & tools**: building things that are useful and maintainable over time;
+- **Reading & life**: interests beyond technology, changes, and reflections along the way.
 
-同一 `topic` 自动归到同一书架，新主题自动增加书架；每层最多 12 本，放满后自动增加一层。收藏按日期倒序排列，书脊、编号书目、计数、原文入口和 List 视图均自动生成；点击书脊或书目直接显示点评，不需要找封面图或重复维护链接。编号书单默认收起，可通过“展开书单／收起书单”切换；新增收藏自动出现在书单中。
+If you're working through similar questions, you can find me on [GitHub](https://github.com/Tsan1024) or subscribe via [RSS](https://tsan1024.github.io/rss.xml).
 
-收藏展示在 `/bookmarks/`，不进入文章归档和文章 RSS。无需 JavaScript 也可用书架和书本的展开功能；Library / List 切换在 JavaScript 可用时启用。
-
-## 产品
-
-导航中的 Products 展示在 `/products/`。每个产品是 `src/content/products/` 下的一个 Markdown 文件，文件名对应详情页地址（例如 `my-tool.md` → `/products/my-tool/`）：
-
-```md
----
-title: "产品名称"
-description: "一句话介绍产品解决的问题"
-descriptionEn: "A short English introduction."
-url: "https://example.com"
-source: "https://github.com/username/repo"
-tags: [AI, 工具]
-order: 0
-draft: false
 ---
 
-介绍产品的功能、使用场景和上手方式。
-```
+你好，我是 Tsan1024。
 
-列表优先显示 `descriptionEn` 英文摘要，未填写时显示中文摘要；详情正文可以按英文、中文的顺序撰写。下载类产品可设置 `download: true`，将入口按钮显示为 Download。
+我关注 AI 与软件工程，也对工具如何改变人的工作、判断与创造方式保持好奇。这里不仅保存技术方案，也记录阅读、生活，以及那些尚未形成标准答案的问题。
 
-`url`（产品入口）、`source`（源码）和 `tags` 均可省略；`order` 越小越靠前，默认为 0。`draft: true` 的产品不会出现在列表或生成详情页。目录中的 `example.md` 是草稿模板，复制并修改后设为 `draft: false` 即可发布。产品不进入文章归档和 RSS。
+我喜欢琢磨问题：我们真正想解决什么，怎样把问题定义清楚，又有哪些可能的解法。阅读、研究、分析和实践，让我不断修正自己的理解。写作帮助我理清思路，也看见那些还没想明白的地方。
 
-## 本地预览
+## 这里会写什么
 
-```sh
-npm install
-npm run dev
-```
+- **AI 与工程**：模型、数据、系统设计与生产实践，以及 AI 对组织与协作方式的影响；
+- **创造与工具**：如何构建真正有用、能够长期维护的东西；
+- **阅读与生活**：技术之外的兴趣、变化和阶段性思考。
 
-## 发布
-
-推送到 `master` 分支后，GitHub Actions 会自动构建并发布到 GitHub Pages。
+如果你也在解决类似的问题，欢迎通过 [GitHub](https://github.com/Tsan1024) 找到我，或者使用 [RSS](https://tsan1024.github.io/rss.xml) 订阅这里的更新。
