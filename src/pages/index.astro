@@ -13,13 +13,13 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
 <!doctype html>
 <html lang="zh-CN">
-	<head><BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} /></head>
+	<head><BaseHead title={`Blog · ${SITE_TITLE}`} description={SITE_DESCRIPTION} /></head>
 	<body class="journal-home">
 		<Header />
 		<main class="home">
 			<div class="content-grid">
 				<section class="latest" aria-labelledby="latest-posts">
-					<div class="section-heading"><h1 id="latest-posts">文章</h1><a href="/blog">查看归档 <span aria-hidden="true">→</span></a></div>
+					<div class="section-heading"><h1 id="latest-posts">Blog</h1><a href="/archive/">Archive <span aria-hidden="true">→</span></a></div>
 					<ul class="post-list">{posts.map((post) => (
 						<li><article><FormattedDate date={post.data.pubDate} /><h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2><p class="post-description">{post.data.description}</p></article></li>
 					))}</ul>

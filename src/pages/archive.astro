@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const years = [...new Set(posts.map((post) => post.data.pubDate.getUTCFullYear()))];
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head><BaseHead title="Archive · Tsan1024" description="Tsan1024 的文章归档，按年份排列。" /></head>
+	<body>
+		<Header />
+		<main>
+			<header class="page-heading"><h1>Archive</h1><p>{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p></header>
+			{years.map((year) => (
+				<section aria-labelledby={`year-${year}`}>
+					<h2 id={`year-${year}`}>{year}</h2>
+					<ul>{posts.filter((post) => post.data.pubDate.getUTCFullYear() === year).map((post) => (
+						<li><time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toISOString().slice(5, 10)}</time><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
+					))}</ul>
+				</section>
+			))}
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	:global(body) { --wide-width: 760px; }
+	.page-heading { padding: 3.5rem 0 3rem; }
+	.page-heading h1 { font-family: inherit; font-size: 2.25rem; font-weight: 500; }
+	.page-heading p { font-size: 0.85rem; }
+	section + section { margin-top: 2.75rem; }
+	h2 { margin: 0 0 1.25rem; font-family: inherit; font-size: 1.4rem; font-weight: 500; }
+	ul { margin: 0; padding: 0; list-style: none; }
+	li { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 1rem; padding: 0.7rem 0; align-items: baseline; }
+	time { font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+	li a { color: var(--text); text-decoration: none; line-height: 1.7; }
+	li a:hover { color: var(--accent); }
+	@media (max-width: 520px) { li { grid-template-columns: 3rem minmax(0, 1fr); gap: 0.7rem; } }
+</style>
