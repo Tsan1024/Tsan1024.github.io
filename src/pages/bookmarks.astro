@@ -1,0 +1,28 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { Content } from '../content/bookmarks.md';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head><BaseHead title="Bookmarks · Tsan1024" description="Articles worth returning to, with a few thoughts of my own." /></head>
+	<body>
+		<Header />
+		<main>
+			<header class="page-heading"><h1>Bookmarks</h1><p lang="en">Worth reading, worth returning to.</p></header>
+			<div class="prose bookmarks"><Content /></div>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.bookmarks { color: var(--muted); }
+	.bookmarks :global(h2) { margin: 2.5rem 0 0.5rem; font-size: 1.25rem; line-height: 1.6; }
+	.bookmarks :global(h2:first-child) { margin-top: 0; }
+	.bookmarks :global(h2 a) { color: var(--text); text-decoration: none; }
+	.bookmarks :global(h2 a:hover) { color: var(--accent); }
+	.bookmarks :global(h2 + p) { margin-top: 0; font-size: 0.8rem; }
+</style>

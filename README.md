@@ -18,6 +18,20 @@ draft: false
 正文从这里开始。
 ```
 
+## 收藏
+
+收藏位于 `src/content/bookmarks.md`，新条目放在最上方。添加第一篇时删除“暂无收藏。”：
+
+```md
+## [文章标题](https://example.com/article)
+
+作者或来源 · 收藏于 YYYY-MM-DD
+
+两三句自己的点评。
+```
+
+收藏展示在 `/bookmarks/`，不进入文章归档和文章 RSS。
+
 ## 本地预览
 
 ```sh
