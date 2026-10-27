@@ -18,24 +18,22 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 		<Header />
 		<main class="home">
 			<section class="intro">
-				<p class="eyebrow">Notes on making & thinking</p>
-				<h1>理解系统，<br />记录变化。</h1>
+				<p class="eyebrow">Tsan1024 · 个人笔记</p>
+				<h1>技术、创造与日常。</h1>
 				<p class="lead">你好，我是 Tsan1024。这里记录 AI、软件工程、阅读与生活中的问题，也保存那些值得反复推敲的答案。</p>
-				<div class="intro-links"><a class="primary" href="/blog">开始阅读 <span aria-hidden="true">→</span></a><a href="/about">关于我</a></div>
+				<div class="intro-links"><a href="/about">更多关于我 <span aria-hidden="true">↗</span></a><a href="/rss.xml">订阅 RSS <span aria-hidden="true">↗</span></a></div>
 			</section>
 
 			<div class="content-grid">
 				<section class="latest" aria-labelledby="latest-posts">
 					<div class="section-heading"><h2 id="latest-posts">最新文章</h2><a href="/blog">全部文章 <span aria-hidden="true">→</span></a></div>
 					<ul class="post-list">{posts.map((post) => (
-						<li><article><h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2><FormattedDate date={post.data.pubDate} /><p class="post-description">{post.data.description}</p></article></li>
+						<li><article><FormattedDate date={post.data.pubDate} /><h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2><p class="post-description">{post.data.description}</p></article></li>
 					))}</ul>
 				</section>
 
 				<aside aria-label="博客简介">
-					<section class="aside-block"><p class="aside-label">此刻关注</p><p>AI 如何改变软件工程，以及人在自动化越来越强的世界里，如何继续保持判断、好奇心和创造力。</p></section>
-					<section class="aside-block"><p class="aside-label">持续探索</p><ul><li>AI 与工程</li><li>创造与工具</li><li>阅读与生活</li></ul></section>
-					<p class="aside-note">保持好奇，持续构建。</p>
+					<section class="aside-block"><p class="aside-label">这里的几个方向</p><ul><li>AI 与工程</li><li>创造与工具</li><li>阅读与生活</li></ul></section>
 				</aside>
 			</div>
 		</main>
@@ -44,35 +42,38 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 </html>
 
 <style>
-	.home { width: min(calc(100% - 2.5rem), 980px); }
-	.intro { max-width: 760px; padding: clamp(5rem, 10vw, 7.5rem) 0 clamp(4.5rem, 8vw, 6.5rem); }
-	.intro h1 { max-width: 720px; margin: 0; font-size: clamp(3rem, 6vw, 4.8rem); line-height: 1.14; letter-spacing: -0.05em; }
+	:global(body) { --wide-width: 820px; }
+	.home { width: min(calc(100% - 2.5rem), 820px); }
+	.intro { padding: 5rem 0 3.5rem; }
+	.intro h1 { margin: 0; font-size: clamp(2rem, 4vw, 2.9rem); line-height: 1.4; letter-spacing: -0.025em; text-wrap: balance; }
 	.lead { max-width: 610px; margin: 1.6rem 0 0; color: var(--muted); font-size: 1.05rem; line-height: 1.9; }
 	.intro-links { display: flex; align-items: center; gap: 1.5rem; margin-top: 1.8rem; font-size: 0.9rem; }
 	.intro-links a { color: var(--text); text-decoration: none; }
 	.intro-links .primary { display: inline-flex; align-items: center; gap: 1rem; padding: 0.65rem 0.9rem; border-radius: 4px; background: var(--text); color: var(--background); }
-	.content-grid { display: grid; grid-template-columns: minmax(0, 2.15fr) minmax(220px, 0.85fr); gap: clamp(3rem, 7vw, 5rem); padding: 3rem 0 2rem; border-top: 1px solid var(--border); }
+	.content-grid { padding: 2.3rem 0 0; border-top: 1px solid var(--border); }
 	.latest { min-width: 0; }
 	.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
 	.section-heading h2 { margin: 0; font-size: 1.15rem; }
 	.section-heading > a { color: var(--muted); font-size: 0.82rem; text-decoration: none; white-space: nowrap; }
-	.post-list li { padding: 1.35rem 0; }
-	.post-list h2 { font-size: 1rem; }
-	.post-description { font-size: 0.9rem; }
-	aside { align-self: start; padding-left: 1.75rem; border-left: 1px solid var(--border); color: var(--muted); font-size: 0.88rem; }
+	.post-list { border-top: 0; }
+	.post-list > li { padding: 1.8rem 0; }
+	.post-list article { display: flex; flex-direction: column; gap: 0; }
+	.post-list :global(time) { margin: 0 0 0.6rem; font-size: 0.78rem; color: var(--muted); }
+	.post-list h2 { font-size: 1.25rem; line-height: 1.6; }
+	.post-description { max-width: 660px; margin-top: 0.65rem; font-size: 0.95rem; line-height: 1.85; }
+	aside { margin-top: 2.5rem; color: var(--muted); font-size: 0.88rem; }
 	.aside-block + .aside-block { margin-top: 2.2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
 	.aside-label { margin: 0 0 0.7rem; color: var(--text); font-family: ui-serif, "Noto Serif SC", serif; font-size: 0.98rem; font-weight: 650; }
 	.aside-block > p:not(.aside-label) { margin: 0; line-height: 1.8; }
-	.aside-block ul { display: grid; gap: 0.55rem; margin: 0; padding: 0; list-style: none; }
-	.aside-block li::before { content: "—"; margin-right: 0.55rem; color: var(--faint); }
+	.aside-block ul { display: flex; flex-wrap: wrap; gap: 0.6rem 1.8rem; margin: 0; padding: 0; list-style: none; }
 	.aside-note { margin: 2.2rem 0 0; color: var(--faint); font-size: 0.8rem; }
 	@media (max-width: 760px) {
-		.home { width: min(calc(100% - 2rem), 980px); }
-		.intro { padding: 4rem 0 4.5rem; }
-		.intro h1 { font-size: clamp(2.65rem, 12vw, 3.45rem); line-height: 1.16; }
+		.home { width: min(calc(100% - 2.5rem), 820px); }
+		.intro { padding: 3rem 0 2.6rem; }
+		.intro h1 { font-size: clamp(1.7rem, 6.5vw, 2.4rem); line-height: 1.5; }
 		.lead { margin-top: 1.35rem; font-size: 1rem; line-height: 1.85; }
 		.content-grid { grid-template-columns: minmax(0, 1fr); gap: 3rem; padding-top: 2.5rem; }
-		aside { padding: 2rem 0 0; border-top: 1px solid var(--border); border-left: 0; }
+		aside { padding: 0; border: 0; }
 		.aside-block + .aside-block { margin-top: 1.6rem; padding-top: 1.5rem; }
 	}
 </style>
