@@ -14,45 +14,31 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 <!doctype html>
 <html lang="zh-CN">
 	<head><BaseHead title={`Blog · ${SITE_TITLE}`} description={SITE_DESCRIPTION} /></head>
-	<body class="journal-home">
+	<body>
 		<Header />
-		<main class="home">
-			<div class="content-grid">
-				<section class="latest" aria-labelledby="latest-posts">
-					<div class="section-heading"><h1 id="latest-posts">Blog</h1><a href="/archive/">Archive <span aria-hidden="true">→</span></a></div>
-					<ul class="post-list">{posts.map((post) => (
-						<li><article><FormattedDate date={post.data.pubDate} /><h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2><p class="post-description">{post.data.description}</p></article></li>
-					))}</ul>
-				</section>
-
-			</div>
+		<main>
+			<header class="page-heading"><h1>Blog</h1></header>
+			<ul class="entries">
+				{posts.map((post) => (
+					<li><article>
+						<h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2>
+						<FormattedDate date={post.data.pubDate} />
+						<p>{post.data.description}</p>
+					</article></li>
+				))}
+			</ul>
 		</main>
 		<Footer />
 	</body>
 </html>
 
 <style>
-	:global(body.journal-home) { --wide-width: 760px; --background: #fafaf8; min-height: 100vh; background: var(--background); }
-	:global(.journal-home > header) { border-bottom: 0; }
-	:global(.journal-home > footer .footer-note) { display: none; }
-	.home { width: min(calc(100% - 3rem), 760px); min-height: 0; }
-	.content-grid { padding: 3.5rem 0 0; }
-	.latest { min-width: 0; }
-	.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-bottom: 1.3rem; border-bottom: 1px solid var(--border); }
-	.section-heading h1 { margin: 0; font-family: inherit; font-size: 1.4rem; font-weight: 600; letter-spacing: -0.025em; }
-	.section-heading > a { color: var(--muted); font-size: 0.82rem; text-decoration: none; white-space: nowrap; }
-	.post-list { border-top: 0; }
-	.post-list > li { padding: 2rem 0; }
-	.post-list article { display: flex; flex-direction: column; gap: 0; }
-	.post-list :global(time) { margin: 0 0 0.6rem; font-size: 0.78rem; color: var(--muted); }
-	.post-list h2 { max-width: 660px; font-size: 1.25rem; line-height: 1.65; }
-	.post-description { max-width: 650px; margin-top: 0.55rem; font-size: 0.92rem; line-height: 1.85; }
-	.post-list > li:last-child { border-bottom: 0; }
-	:global(.journal-home > footer) { margin-top: 3rem; }
-	@media (prefers-color-scheme: dark) { :global(body.journal-home) { --background: #191c19; } }
-	@media (max-width: 760px) {
-		:global(.journal-home > header nav), :global(.journal-home > footer) { width: calc(100% - 3rem); }
-		.content-grid { padding-top: 2rem; }
-		.post-list h2 { font-size: 1.08rem; }
-	}
+	.entries { margin: 0; padding: 0; list-style: none; }
+	.entries > li + li { margin-top: 3rem; }
+	h2 { margin: 0 0 0.5rem; font-size: 1.4rem; font-weight: 600; line-height: 1.55; letter-spacing: -0.02em; }
+	h2 a { color: var(--text); text-decoration: none; }
+	h2 a:hover { color: var(--accent); }
+	article :global(time) { display: block; color: var(--muted); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+	article p { margin: 0.7rem 0 0; color: var(--muted); font-size: 0.95rem; line-height: 1.85; }
+	@media (max-width: 620px) { h2 { font-size: 1.2rem; }.entries > li + li { margin-top: 2.5rem; } }
 </style>
