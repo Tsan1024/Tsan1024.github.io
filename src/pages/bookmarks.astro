@@ -22,25 +22,24 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 				<div class="view-switch" role="group" aria-label="View" hidden><button type="button" data-view="library" aria-pressed="true">Library</button><button type="button" data-view="list" aria-pressed="false">List</button></div>
 			</div>
 			<div id="library-view">
-				<p class="hint">按主题浏览书架，或直接点击书目查看点评。</p>
+				<p class="hint">点击书脊或书目，直接查看点评与原文。</p>
 				<div class="shelves">
 					{topics.map((topic, index) => {
 						const shelfBooks = books.filter(book => book.data.topic === topic);
-						return <div class="shelf-group"><details class="shelf" name="library-shelves" id={`shelf-${index}`}>
-							<summary class="shelf-summary"><div class="shelf-caption"><span class="shelf-number">{String(index + 1).padStart(2, '0')}</span><h2>{topic}</h2><span class="shelf-count">{shelfBooks.length} {shelfBooks.length === 1 ? 'bookmark' : 'bookmarks'}</span><span class="shelf-toggle" aria-hidden="true">+</span></div><LibraryShelf titles={shelfBooks.map(book => book.data.title)} index={index} /><span class="shelf-action"><span class="when-closed">Browse shelf</span><span class="when-open">Close shelf</span><span aria-hidden="true">↗</span></span></summary>
+						return <div class="shelf-group"><div class="shelf-card">
+							<div class="shelf-caption"><span class="shelf-number">{String(index + 1).padStart(2, '0')}</span><h2>{topic}</h2><span class="shelf-count">{shelfBooks.length} {shelfBooks.length === 1 ? 'bookmark' : 'bookmarks'}</span></div>
+							<LibraryShelf books={shelfBooks.map(book => ({id: book.id, title: book.data.title}))} index={index} />
+							<details class="shelf" name="library-shelves" id={`shelf-${index}`}>
+							<summary class="shelf-summary"><span class="shelf-action"><span class="when-closed">Browse shelf</span><span class="when-open">Close shelf</span><span class="shelf-toggle" aria-hidden="true">+</span></span></summary>
 							<div class="shelf-content">
-								<p class="shelf-instruction">点击书封查看点评与原文。</p>
 								<div class="books">
 									{shelfBooks.map(({ id, data, Content }, bookIndex) => <details class="book" name={`books-${index}`} id={`entry-${id}`}>
-										<summary aria-label={`打开收藏：${data.title}`}>
-											<div class="book-cover"><span class="cover-series">COLLECTED READING</span><span class="cover-title">{data.coverTitle || data.title}</span><span class="cover-rule" aria-hidden="true"></span><span class="cover-author">{data.author}</span><span class="cover-bottom"><span>{topic}</span><span>{String(bookIndex + 1).padStart(2, '0')}</span></span></div>
-											<span class="book-caption">{data.title}</span><span class="book-action"><span class="when-closed">Open book</span><span class="when-open">Close book</span> <span aria-hidden="true">↓</span></span>
-										</summary>
-										<div class="book-note" id={`book-${id}`}><p class="note-meta">{data.author} · {data.date.toISOString().slice(0, 10)}</p><div class="prose"><Content /></div><a class="source-link" href={data.url} target="_blank" rel="noopener noreferrer">阅读原文 ↗ <span class="sr-only">（在新标签页打开）</span></a><p class="source-domain">{new URL(data.url).hostname}</p></div>
+										<summary class="book-title"><span class="index-number">{String(bookIndex + 1).padStart(2, '0')}</span>{data.title}</summary>
+										<div class="book-note" id={`book-${id}`} tabindex="-1"><p class="note-meta">{data.author} · {data.date.toISOString().slice(0, 10)}</p><div class="prose"><Content /></div><a class="source-link" href={data.url} target="_blank" rel="noopener noreferrer">阅读原文 ↗ <span class="sr-only">（在新标签页打开）</span></a><p class="source-domain">{new URL(data.url).hostname}</p></div>
 									</details>)}
 								</div>
 							</div>
-						</details><ol class="shelf-index" aria-label={`${topic}书目`}>{shelfBooks.map(({id, data}, bookIndex) => <li><span class="index-number">{String(bookIndex + 1).padStart(2, '0')}</span><div><a href={`#book-${id}`} data-open-book={`entry-${id}`} data-open-shelf={`shelf-${index}`}>{data.title}</a><span class="index-author">{data.author}</span></div></li>)}</ol></div>;
+						</details></div><ol class="shelf-index" aria-label={`${topic}书目`}>{shelfBooks.map(({id, data}, bookIndex) => <li><span class="index-number">{String(bookIndex + 1).padStart(2, '0')}</span><div><a href={`#book-${id}`} data-open-book={`entry-${id}`} data-open-shelf={`shelf-${index}`}>{data.title}</a><span class="index-author">{data.author}</span></div></li>)}</ol></div>;
 					})}
 				</div>
 				{books.length === 0 && <p class="hint">暂无收藏。</p>}
@@ -54,7 +53,7 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 </html>
 
 <script>
-	document.querySelectorAll<HTMLAnchorElement>('[data-open-book]').forEach(link => {
+	document.querySelectorAll<HTMLElement | SVGElement>('[data-open-book]').forEach(link => {
 		link.addEventListener('click', (event) => {
 			const shelf = document.getElementById(link.dataset.openShelf || '');
 			const book = document.getElementById(link.dataset.openBook || '');
@@ -62,8 +61,9 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 			event.preventDefault();
 			shelf.open = true;
 			book.open = true;
-			book.querySelector('summary')?.focus({preventScroll: true});
-			book.scrollIntoView({block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+			const note = book.querySelector<HTMLElement>('.book-note');
+			note?.focus({preventScroll: true});
+			note?.scrollIntoView({block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
 		});
 	});
 	const controls = document.querySelector<HTMLElement>('.view-switch');
@@ -104,37 +104,29 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 	.shelf-index a { font-size: 0.9rem; line-height: 1.7; text-decoration-thickness: 1px; }
 	.index-author { display: block; margin-top: 0.15rem; color: var(--muted); font-size: 0.74rem; }
 	.book { scroll-margin-top: 1.5rem; }
-	.shelf { border: 1px solid var(--border); border-radius: 6px; background: color-mix(in srgb, var(--surface) 45%, var(--background)); }
+	.shelf-card { border: 1px solid var(--border); border-radius: 6px; background: color-mix(in srgb, var(--surface) 45%, var(--background)); }
 	summary { list-style: none; cursor: pointer; }
 	summary::-webkit-details-marker { display: none; }
-	.shelf-summary { padding: 1.3rem 1.3rem 0.85rem; }
-	.shelf-caption { display: flex; align-items: baseline; gap: 0.8rem; }
+	.shelf-summary { padding: 0.25rem 1.3rem 0.85rem; }
+	.shelf-caption { display: flex; align-items: baseline; gap: 0.8rem; padding: 1.3rem 1.3rem 0; }
 	.shelf-number { color: var(--muted); font-size: 0.65rem; letter-spacing: 0.08em; }
 	.shelf-caption h2 { margin: 0; font-size: 1.05rem; }
 	.shelf-count { margin-left: auto; color: var(--muted); font-size: 0.72rem; }
 	.shelf-toggle { color: var(--muted); font-size: 1rem; }
 	.shelf[open] > summary .shelf-toggle { transform: rotate(45deg); }
-	.shelf-summary :global(svg) { display: block; width: 100%; height: auto; margin: 1rem 0 0; filter: drop-shadow(0 8px 5px rgb(0 0 0 / 0.07)); transition: transform 400ms ease; }
-	.shelf-summary:hover :global(svg) { transform: translateY(-3px); }
+	.shelf-card :global(svg) { display: block; width: calc(100% - 2.6rem); height: auto; margin: 1rem 1.3rem 0; filter: drop-shadow(0 8px 5px rgb(0 0 0 / 0.07)); }
+	.shelf-card :global(svg a) { cursor: pointer; }
+	.shelf-card :global(svg a:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+	.shelf-card :global(svg a g) { transition: transform 250ms ease; transform-box: fill-box; transform-origin: bottom; }
+	.shelf-card :global(svg a:hover g), .shelf-card :global(svg a:focus-visible g) { transform: translateY(-4px); }
 	.shelf-action { display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem; color: var(--accent); font-size: 0.73rem; }
 	.when-open { display: none; }
 	.shelf[open] > summary .when-open, .book[open] > summary .when-open { display: inline; }
 	.shelf[open] > summary .when-closed, .book[open] > summary .when-closed { display: none; }
 	.shelf-content { padding: 1.5rem; border-top: 1px solid var(--border); }
-	.shelf-instruction { margin: 0 0 1.5rem; color: var(--muted); font-size: 0.8rem; }
-	.books { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); align-items: start; gap: 2rem; }
+	.books { display: grid; gap: 1.25rem; }
 	.book { min-width: 0; }
-	.book summary { max-width: 260px; }
-	.book-cover { position: relative; display: flex; flex-direction: column; width: 190px; min-height: 250px; padding: 1.3rem 1.2rem 1rem 1.5rem; border-radius: 2px 5px 5px 2px; background: var(--book-cloth); color: var(--book-foil); border-left: 7px solid var(--book-shadow); box-shadow: 3px 0 0 var(--wood-light), 5px 1px 0 var(--wood-dark), 8px 9px 14px rgb(0 0 0 / 0.12), inset 1px 0 0 var(--book-highlight); transition: transform 350ms ease, box-shadow 350ms ease; }
-	.book-cover::after { content: ''; position: absolute; inset: 8px; border: 1px solid color-mix(in srgb, var(--book-foil) 25%, transparent); border-left: 0; pointer-events: none; }
-	.book summary:hover .book-cover, .book[open] .book-cover { transform: translateY(-5px) rotate(-1deg); }
-	.cover-series { font-size: 0.48rem; letter-spacing: 0.16em; }
-	.cover-title { white-space: pre-line; overflow-wrap: anywhere; margin-top: 1.8rem; font-family: Georgia, 'Songti SC', serif; font-size: 1.5rem; line-height: 1.3; }
-	.cover-rule { width: 25px; height: 1px; background: var(--book-foil); margin-top: 1.4rem; opacity: 0.6; }
-	.cover-author { margin-top: 0.7rem; font-size: 0.68rem; }
-	.cover-bottom { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: auto; padding-top: 1.7rem; font-size: 0.58rem; }
-	.book-caption { display: block; margin-top: 1.25rem; font-size: 0.9rem; line-height: 1.7; font-weight: 600; }
-	.book-action { display: block; margin-top: 0.5rem; font-size: 0.72rem; color: var(--accent); }
+	.book-title { display: flex; gap: 0.7rem; align-items: baseline; font-size: 0.95rem; line-height: 1.7; font-weight: 600; }
 	.book-note { margin-top: 1.25rem; padding: 1.1rem; border-left: 2px solid var(--accent); background: var(--background); overflow-wrap: anywhere; }
 	.note-meta { color: var(--muted); font-size: 0.75rem; margin: 0 0 1rem; }
 	.book-note .prose, .list-book .prose { font-size: 0.9rem; line-height: 1.85; }
@@ -144,7 +136,7 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 	.list-topic > h2 { font-size: 1.1rem; margin: 0 0 1.5rem; }
 	.list-book + .list-book { margin-top: 2.5rem; }
 	.list-book h3 { font-size: 1.2rem; margin: 0 0 0.6rem; }
-	@media (max-width: 520px) { .shelf-summary { padding: 1rem 0.8rem 0.8rem; }.shelf-content { padding: 1.25rem; }.book-cover { width: 175px; min-height: 235px; }.shelf-caption { gap: 0.55rem; }.shelf-count { font-size: 0.65rem; } }
+	@media (max-width: 520px) { .shelf-summary { padding: 0.25rem 0.8rem 0.8rem; }.shelf-caption { padding: 1rem 0.8rem 0; gap: 0.55rem; }.shelf-card :global(svg) { width: calc(100% - 1.6rem); margin: 1rem 0.8rem 0; }.shelf-content { padding: 1.25rem; }.shelf-count { font-size: 0.65rem; } }
 	@media (prefers-color-scheme: dark) { .library-page { --wood-light: #685e4d; --wood-front: #514839; --wood-mid: #484032; --wood-dark: #302c23; --wood-back: #282820; --wood-seam: #181b16; --metal: #9b8e6e; --book-cloth: #405d51; --book-highlight: #718777; --book-shadow: #223b2e; --book-label: #324c3f; --book-foil: #e0d7b6; } }
-	@media (prefers-reduced-motion: reduce) { .book-cover, .shelf-summary :global(svg) { transition: none; }.book summary:hover .book-cover, .book[open] .book-cover, .shelf-summary:hover :global(svg) { transform: none; } }
+	@media (prefers-reduced-motion: reduce) { .shelf-card :global(svg a g) { transition: none; }.shelf-card :global(svg a:hover g), .shelf-card :global(svg a:focus-visible g) { transform: none; } }
 </style>

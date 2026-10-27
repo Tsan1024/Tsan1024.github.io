@@ -1,6 +1,5 @@
 ---
 title: "Ilya Sutskever 必读材料：30 项深度导读"
-coverTitle: "Ilya Sutskever\nReading List"
 url: "https://keepkeen.github.io/series/ilya-sutskever-reading-list/"
 author: "Liuliming"
 topic: "AI 基础"
