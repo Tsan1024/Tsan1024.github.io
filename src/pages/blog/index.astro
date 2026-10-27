@@ -19,14 +19,19 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 		<Header />
 		<main>
 			<header class="page-heading">
+				<p class="eyebrow">Archive</p>
 				<h1>文章</h1>
-				<p>按时间记录学习、实践与思考。</p>
+				<p>关于 AI、软件工程、创造与生活的长期记录。</p>
 			</header>
 			<ul class="post-list">
 				{posts.map((post) => (
 					<li>
-						<a href={`/blog/${post.id}/`}>{post.data.title}</a>
-						<FormattedDate date={post.data.pubDate} />
+						<article>
+							<h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2>
+							<FormattedDate date={post.data.pubDate} />
+							<p class="post-description">{post.data.description}</p>
+							{post.data.tags.length > 0 && <ul class="tag-list">{post.data.tags.map((tag) => <li>{tag}</li>)}</ul>}
+						</article>
 					</li>
 				))}
 			</ul>

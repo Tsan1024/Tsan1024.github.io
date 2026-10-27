@@ -8,34 +8,42 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 8);
+	.slice(0, 6);
 ---
 
 <!doctype html>
 <html lang="zh-CN">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
+	<head><BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} /></head>
 	<body>
 		<Header />
-		<main>
-			<section class="intro">
-				<h1>{SITE_TITLE}</h1>
-				<p>{SITE_DESCRIPTION}</p>
-			</section>
-			<section aria-labelledby="latest-posts">
-				<div class="section-heading">
-					<h2 id="latest-posts">最新文章</h2>
-					<a href="/blog">查看全部</a>
+		<main class="home">
+			<section class="hero">
+				<div class="hero-copy">
+					<p class="eyebrow">Notes on making & thinking</p>
+					<h1>理解系统，<br /><span>记录变化。</span></h1>
+					<p class="lead">你好，我是 Tsan1024。这里记录 AI、软件工程、阅读与生活中的问题，也保存那些值得反复推敲的答案。</p>
+					<div class="hero-links"><a class="primary" href="/blog">开始阅读 <span aria-hidden="true">→</span></a><a href="/about">关于我</a></div>
 				</div>
-				<ul class="post-list">
-					{posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`}>{post.data.title}</a>
-							<FormattedDate date={post.data.pubDate} />
-						</li>
-					))}
-				</ul>
+				<div class="thinking-card" aria-label="思考与实践循环示意图">
+					<p class="card-label">A WORK IN PROGRESS</p>
+					<div class="orbit" aria-hidden="true"><span class="orbit-ring ring-one"></span><span class="orbit-ring ring-two"></span><span class="core">T</span><span class="node node-one">观察</span><span class="node node-two">构建</span><span class="node node-three">反思</span></div>
+					<p class="card-note">在实践里认识世界，<br />在记录中重新理解自己。</p>
+				</div>
+			</section>
+
+			<section class="currently" aria-labelledby="currently-title">
+				<p class="section-index">01</p>
+				<div><h2 id="currently-title">此刻关注</h2><p>AI 如何改变软件工程，以及人在自动化越来越强的世界里，如何继续保持判断、好奇心和创造力。</p></div>
+			</section>
+
+			<section class="latest" aria-labelledby="latest-posts">
+				<div class="section-heading"><div><p class="section-index">02</p><h2 id="latest-posts">最新文章</h2></div><a href="/blog">查看全部 <span aria-hidden="true">→</span></a></div>
+				<ul class="post-list">{posts.map((post) => (<li><article><h2><a href={`/blog/${post.id}/`}>{post.data.title}</a></h2><FormattedDate date={post.data.pubDate} /><p class="post-description">{post.data.description}</p></article></li>))}</ul>
+			</section>
+
+			<section class="topics" aria-labelledby="topics-title">
+				<div><p class="section-index">03</p><h2 id="topics-title">持续探索</h2></div>
+				<ul><li><span>01</span><strong>AI 与工程</strong><p>模型、系统与生产实践</p></li><li><span>02</span><strong>创造与工具</strong><p>构建真正有用的东西</p></li><li><span>03</span><strong>阅读与生活</strong><p>技术之外的长期成长</p></li></ul>
 			</section>
 		</main>
 		<Footer />
@@ -43,19 +51,38 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 </html>
 
 <style>
-	.intro { padding: 4rem 0 3rem; }
-	.intro h1 {
-		margin-bottom: 0.5rem;
-		font-size: clamp(2.2rem, 8vw, 3.7rem);
-		letter-spacing: -0.045em;
-	}
-	.intro p { margin: 0; color: var(--muted); font-size: 1.08rem; }
-	.section-heading {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		margin-bottom: 1rem;
-	}
-	.section-heading h2 { font-size: 1.1rem; }
-	.section-heading a { font-size: 0.9rem; }
+	.home { width: min(100% - 2.5rem, var(--wide-width)); }
+	.hero { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(300px, 0.88fr); gap: clamp(3rem, 8vw, 7rem); align-items: center; padding: clamp(5rem, 11vw, 8.5rem) 0 6rem; }
+	.hero h1 { margin: 0; font-size: clamp(3.2rem, 8vw, 6rem); line-height: 1.08; letter-spacing: -0.055em; }
+	.hero h1 span { color: var(--accent); }
+	.lead { max-width: 35rem; margin: 2rem 0 0; color: var(--muted); font-size: 1.08rem; line-height: 1.9; }
+	.hero-links { display: flex; align-items: center; gap: 1.5rem; margin-top: 2rem; font-size: 0.92rem; }
+	.hero-links a { color: var(--text); text-decoration: none; }
+	.hero-links .primary { display: inline-flex; gap: 1.2rem; align-items: center; padding: 0.72rem 1rem; border-radius: 4px; background: var(--text); color: var(--background); }
+	.thinking-card { min-height: 430px; padding: 1.5rem; border: 1px solid var(--border); border-radius: 2px; background: color-mix(in srgb, var(--surface) 82%, transparent); box-shadow: var(--shadow); }
+	.card-label { margin: 0; color: var(--faint); font-size: 0.65rem; letter-spacing: 0.18em; }
+	.orbit { position: relative; width: 270px; height: 270px; margin: 1.2rem auto 0; }
+	.orbit-ring { position: absolute; inset: 28px; border: 1px solid var(--border); border-radius: 50%; }
+	.ring-two { inset: 72px; border-style: dashed; }
+	.core { position: absolute; inset: 50%; display: grid; place-items: center; width: 54px; height: 54px; margin: -27px; border-radius: 50%; background: var(--accent); color: var(--background); font-family: ui-serif, Georgia, serif; font-size: 1.3rem; }
+	.node { position: absolute; padding: 0.2rem 0.55rem; background: var(--surface-strong); color: var(--muted); font-size: 0.73rem; box-shadow: 0 0 0 1px var(--border); }
+	.node-one { top: 28px; left: 104px; }.node-two { right: 2px; bottom: 69px; }.node-three { bottom: 50px; left: 6px; }
+	.card-note { margin: -0.35rem 0 0; color: var(--muted); font-family: ui-serif, "Noto Serif SC", serif; font-size: 0.95rem; text-align: center; }
+	.currently { display: grid; grid-template-columns: 100px 1fr; padding: 2.2rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+	.section-index { margin: 0; color: var(--accent-warm); font-size: 0.72rem; letter-spacing: 0.08em; }
+	.currently h2, .section-heading h2, .topics h2 { margin: 0; font-size: 1.15rem; }
+	.currently p:not(.section-index) { max-width: 48rem; margin: 0.65rem 0 0; color: var(--muted); }
+	.latest { padding: 5rem 0; }
+	.section-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 1.5rem; }
+	.section-heading h2 { margin-top: 0.5rem; }
+	.section-heading > a { color: var(--muted); font-size: 0.86rem; text-decoration: none; }
+	.topics { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; padding: 3rem 0; border-top: 1px solid var(--border); }
+	.topics h2 { margin-top: 0.5rem; }
+	.topics ul { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+	.topics li { display: grid; grid-template-columns: 2.5rem 1fr; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+	.topics li:first-child { padding-top: 0; }
+	.topics li span { grid-row: 1 / span 2; color: var(--faint); font-size: 0.72rem; }
+	.topics strong { font-family: ui-serif, "Noto Serif SC", serif; font-size: 1rem; }
+	.topics li p { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.85rem; }
+	@media (max-width: 760px) { .home { width: min(100% - 2rem, var(--wide-width)); }.hero { grid-template-columns: 1fr; padding-top: 4.5rem; }.thinking-card { display: none; }.currently { grid-template-columns: 3rem 1fr; }.topics { grid-template-columns: 1fr; gap: 1.5rem; } }
 </style>
