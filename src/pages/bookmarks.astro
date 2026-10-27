@@ -28,7 +28,7 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 						const shelfBooks = books.filter(book => book.data.topic === topic);
 						return <div class="shelf-group"><div class="shelf-card">
 							<div class="shelf-caption"><span class="shelf-number">{String(index + 1).padStart(2, '0')}</span><h2>{topic}</h2><span class="shelf-count">{shelfBooks.length} {shelfBooks.length === 1 ? 'bookmark' : 'bookmarks'}</span></div>
-							<LibraryShelf books={shelfBooks.map(book => ({id: book.id, title: book.data.title}))} index={index} />
+							{Array.from({length: Math.ceil(shelfBooks.length / 12)}, (_, row) => <LibraryShelf books={shelfBooks.slice(row * 12, (row + 1) * 12).map(book => ({id: book.id, title: book.data.title}))} index={`${index}-${row}`} shelfId={`shelf-${index}`} offset={row * 12} />)}
 							<details class="shelf" name="library-shelves" id={`shelf-${index}`}>
 							<summary class="shelf-summary"><span class="shelf-action"><span class="when-closed">Browse shelf</span><span class="when-open">Close shelf</span><span class="shelf-toggle" aria-hidden="true">+</span></span></summary>
 							<div class="shelf-content">
@@ -39,7 +39,7 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 									</details>)}
 								</div>
 							</div>
-						</details></div><ol class="shelf-index" aria-label={`${topic}书目`}>{shelfBooks.map(({id, data}, bookIndex) => <li><span class="index-number">{String(bookIndex + 1).padStart(2, '0')}</span><div><a href={`#book-${id}`} data-open-book={`entry-${id}`} data-open-shelf={`shelf-${index}`}>{data.title}</a><span class="index-author">{data.author}</span></div></li>)}</ol></div>;
+						</details></div><details class="catalogue"><summary><span class="catalogue-closed">展开书单</span><span class="catalogue-open">收起书单</span><span class="catalogue-count">{shelfBooks.length}</span></summary><ol class="shelf-index" aria-label={`${topic}书目`}>{shelfBooks.map(({id, data}, bookIndex) => <li><span class="index-number">{String(bookIndex + 1).padStart(2, '0')}</span><div><a href={`#book-${id}`} data-open-book={`entry-${id}`} data-open-shelf={`shelf-${index}`}>{data.title}</a><span class="index-author">{data.author}</span></div></li>)}</ol></details></div>;
 					})}
 				</div>
 				{books.length === 0 && <p class="hint">暂无收藏。</p>}
@@ -99,6 +99,13 @@ const topics = [...new Set(books.map(book => book.data.topic))];
 	.hint { margin: 1rem 0 2rem; color: var(--muted); font-size: 0.82rem; }
 	.shelves { display: grid; gap: 1.8rem; }
 	.shelf-index { margin: 0; padding: 1rem 0 0; list-style: none; }
+	.catalogue { margin-top: 0.85rem; }
+	.catalogue > summary { display: flex; align-items: center; gap: 0.55rem; width: fit-content; color: var(--muted); font-size: 0.78rem; }
+	.catalogue > summary::before { content: '+'; color: var(--accent); }
+	.catalogue[open] > summary::before { content: '−'; }
+	.catalogue-count { font-variant-numeric: tabular-nums; color: var(--muted); }
+	.catalogue-open, .catalogue[open] .catalogue-closed { display: none; }
+	.catalogue[open] .catalogue-open { display: inline; }
 	.shelf-index li { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); gap: 0.65rem; padding: 0.55rem 0; align-items: baseline; }
 	.index-number { color: var(--muted); font-size: 0.7rem; font-variant-numeric: tabular-nums; }
 	.shelf-index a { font-size: 0.9rem; line-height: 1.7; text-decoration-thickness: 1px; }

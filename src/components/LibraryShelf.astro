@@ -1,6 +1,6 @@
 ---
-interface Props { books: { id: string; title: string }[]; index: number; }
-const { books, index } = Astro.props;
+interface Props { books: { id: string; title: string }[]; index: string | number; shelfId: string; offset?: number; }
+const { books, index, shelfId, offset = 0 } = Astro.props;
 const visible = Math.min(books.length, 12);
 ---
 
@@ -22,14 +22,14 @@ const visible = Math.min(books.length, 12);
 		const height = 102 + (i % 3) * 10;
 		const title = Array.from(books[i].title);
 		const shortTitle = title.slice(0, 11).join('') + (title.length > 11 ? '…' : '');
-		return <a href={`#book-${books[i].id}`} data-open-book={`entry-${books[i].id}`} data-open-shelf={`shelf-${index}`} aria-label={`查看收藏：${books[i].title}`}>
+		return <a href={`#book-${books[i].id}`} data-open-book={`entry-${books[i].id}`} data-open-shelf={shelfId} aria-label={`查看收藏：${books[i].title}`}>
 			<title>{books[i].title}</title><g>
 			<rect x={x + 3} y={178 - height} width="30" height={height} rx="2" fill="var(--book-shadow)"/>
 			<rect x={x} y={176 - height} width="28" height={height} rx="2" fill="var(--book-cloth)"/>
 			<rect x={x + 2} y={177 - height} width="2" height={height - 2} fill="var(--book-highlight)"/>
 			<path d={`M${x + 5} ${188 - height}h18 M${x + 5} 164h18`} stroke="var(--book-foil)" stroke-width="1"/>
 			<text transform={`translate(${x + 18} 151) rotate(-90)`} fill="var(--book-foil)" font-size="8" font-family="sans-serif" textLength="65" lengthAdjust="spacingAndGlyphs">{shortTitle}</text>
-			<text x={x + 14} y="171" text-anchor="middle" fill="var(--book-foil)" font-size="7" font-family="sans-serif">{String(i + 1).padStart(2, '0')}</text>
+			<text x={x + 14} y="171" text-anchor="middle" fill="var(--book-foil)" font-size="7" font-family="sans-serif">{String(offset + i + 1).padStart(2, '0')}</text>
 		</g></a>;
 	})}
 	{[59, 76 + visible * 35].map(x => <g><rect x={x} y="141" width="4" height="37" fill="var(--metal)"/><rect x={x - 3} y="175" width="16" height="3" rx="1" fill="var(--metal)"/></g>)}
