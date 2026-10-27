@@ -11,6 +11,14 @@ import Header from '../components/Header.astro';
 		<Header />
 		<main>
 			<header class="page-heading"><h1>About</h1><p lang="en">Still building, still figuring things out.</p></header>
+			<section id="about-en" class="prose about-copy" lang="en" aria-label="English introduction">
+				<p class="opening">Hi, I'm Tsan1024.</p>
+				<p>I'm interested in AI and software engineering, and curious about how tools change the way we work, make decisions, and create. This blog is a place for technical ideas, reading notes, everyday life, and questions I haven't yet answered.</p>
+				<p>I like thinking through problems: what we're really trying to solve, how to define the problem clearly, and what possible solutions there might be. Reading, research, analysis, and practice help me keep revising my understanding. Writing helps me clarify my thinking and recognize what I haven't yet figured out.</p>
+				<h2>What I write about</h2>
+				<ul><li><strong>AI & engineering</strong>: models, data, system design, and production practice, as well as how AI affects organizations and the way people collaborate;</li><li><strong>Making & tools</strong>: building things that are useful and maintainable over time;</li><li><strong>Reading & life</strong>: interests beyond technology, changes, and reflections along the way.</li></ul>
+				<p>If you're working through similar questions, you can find me on <a href="https://github.com/Tsan1024">GitHub</a> or subscribe via <a href="/rss.xml">RSS</a>.</p>
+			</section>
 			<section id="about-zh" class="prose about-copy" lang="zh-CN" aria-label="中文介绍">
 				<p class="opening">你好，我是 Tsan1024。</p>
 				<p>我关注 AI 与软件工程，也对工具如何改变人的工作、判断与创造方式保持好奇。这里不仅保存技术方案，也记录阅读、生活，以及那些尚未形成标准答案的问题。</p>
@@ -26,6 +34,9 @@ import Header from '../components/Header.astro';
 
 <style>
 	.about-copy { padding: 0; }
+	.about-copy:lang(en) { line-height: 1.7; }
+	.about-copy:lang(zh-CN) { line-height: 1.85; }
+	.about-copy + .about-copy { margin-top: 3rem; padding-top: 3rem; border-top: 1px solid var(--border); }
 	.opening { font-size: 1.1rem; }
 	.about-copy h2 { margin-top: 2.5rem; font-size: 1.25rem; }
 </style>
